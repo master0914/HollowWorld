@@ -1,0 +1,13 @@
+
+
+
+Image:
+    Der path muss auf eine Resource Package Datei zugreifen
+    Resource Package erstellen:
+        neue directory in Projektpfad erstellen
+        unterste option wählen (Mark directory as) -> Resources Root
+        dann Dateipfad als zB  "/Sprite/TestKiwi.png"
+    Datei muss als .png Vorliegen für gutes Funktionieren
+
+Ja ich weiß hier muss noch viel mehr hin :(
+
