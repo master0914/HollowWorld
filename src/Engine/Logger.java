@@ -1,4 +1,4 @@
-package HollowWorld.ECS;
+package Engine;
 
 import java.io.File;
 import java.io.FileWriter;

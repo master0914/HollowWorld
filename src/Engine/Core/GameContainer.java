@@ -1,7 +1,8 @@
-package Engine;
+package Engine.Core;
 
 
-import HollowWorld.ECS.Logger;
+import Engine.*;
+import Engine.Interfaces.AbstractGame;
 
 public class GameContainer implements Runnable{
 

@@ -1,5 +1,8 @@
-package Engine;
+package Engine.Interfaces;
 
+
+import Engine.Core.GameContainer;
+import Engine.Core.Renderer;
 
 public abstract class AbstractGame {
     //Wird als Vater für alle Spiele benutzt

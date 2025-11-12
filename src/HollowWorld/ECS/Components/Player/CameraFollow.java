@@ -1,4 +1,4 @@
-package HollowWorld.ECS.Components.Movement;
+package HollowWorld.ECS.Components.Player;
 
 import HollowWorld.ECS.Components.Component;
 

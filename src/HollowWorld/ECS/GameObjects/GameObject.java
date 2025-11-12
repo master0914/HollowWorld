@@ -1,8 +1,10 @@
 package HollowWorld.ECS.GameObjects;
 
-import Engine.Renderer;
+import Engine.Core.GameContainer;
+import Engine.Core.Renderer;
 import HollowWorld.ECS.Components.Component;
 import HollowWorld.ECS.Components.Core.Transform;
+import Engine.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,11 +21,11 @@ public class GameObject {
     }
 
     // updated alle components
-    public void update(float deltaTime) {
+    public void update(GameContainer gc, float deltaTime) {
         if (!active) return; // wenn nicht active macht nix
 
         for (Component component : components.values()) {
-            component.update(deltaTime);
+            component.update(gc,deltaTime);
         }
     }
     public void render(Renderer renderer) {
@@ -53,7 +55,7 @@ public class GameObject {
                 return type.cast(comp);
             }
         }
-        //@TODO logging
+        Logger.warn("tried to get Component: "+type.toString()+" of obj: " + name +". obj does not have this component");
         return null;
     }
 
@@ -70,7 +72,11 @@ public class GameObject {
     }
 
     public Transform getTransform(){
-        return (Transform) components.get(Transform.class);
+        Transform trns = getComponent(Transform.class);
+//        if(trns ==  null){
+//            Logger.warn("tried to get Transform of obj: " + name + ". obj does not have component Transform");
+//        }
+        return trns;
     }
 
     // Einfache Getter/Setter

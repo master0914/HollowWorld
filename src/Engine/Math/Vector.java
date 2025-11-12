@@ -7,15 +7,15 @@ public class Vector{
 
     // (Zx)
     // (Zy)
-    public double x;
-    public double y;
-    public double absoluteValue;
+    public float x;
+    public float y;
+    public float absoluteValue;
 
     AffineTransform tx;
     Polygon arrowHead;
 
 
-    public Vector(double Zx, double Zy){
+    public Vector(float Zx, float Zy){
         this.x = Zx;
         this.y = Zy;
         calculateAbsoluteValue();
@@ -23,7 +23,7 @@ public class Vector{
 
 
     private void calculateAbsoluteValue(){
-        absoluteValue = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+        absoluteValue = (float)( Math.sqrt(Math.pow(x,2) + Math.pow(y,2)));
     }
 
     public Vector getUnitVector(){
@@ -37,7 +37,7 @@ public class Vector{
         return this;
     }
 
-    public Vector multiply(double a){
+    public Vector multiply(float a){
         return new Vector(a*x, a*y);
     }
 

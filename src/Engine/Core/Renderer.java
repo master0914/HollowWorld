@@ -1,4 +1,4 @@
-package Engine;
+package Engine.Core;
 
 import Engine.gfx.Font;
 import Engine.gfx.Image;
@@ -30,11 +30,24 @@ public class Renderer {
     }
 
     public void setPixel(int x, int y, int value){
-        if((x < 0 || x >= pW || y < 0 || y >= pH) || (value == 0xffff00ff)){ // 0xffff00ff ist hässlich also wird es unser Transparent
+        if((x < 0 || x >= pW || y < 0 || y >= pH)){ // 0xffff00ff ist hässlich also wird es unser Transparent
+            return;
+        }
+        int alpha = (value >> 24) & 0xff;
+
+        if((alpha == 0) || (value == 0xffff00ff)){
             return;
         }
 
         p[x + y * pW] = value;
+    }
+
+    public void drawBackground(int color){
+        for(int x = 0; x<pW;x++){
+            for(int y = 0; y<pH;y++){
+                setPixel(x,y,color);
+            }
+        }
     }
 
     public void drawImage(Image image, int offX, int offY){

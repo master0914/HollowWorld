@@ -1,4 +1,4 @@
-package Engine;
+package Engine.Core;
 
 import javax.swing.*;
 import java.awt.*;

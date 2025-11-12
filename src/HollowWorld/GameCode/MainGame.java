@@ -1,21 +1,30 @@
 package HollowWorld.GameCode;
 
 import HollowWorld.ECS.AbstractBoilerPlateGame;
-import HollowWorld.ECS.Components.Core.SpriteRenderer;
-import HollowWorld.ECS.Components.Core.Transform;
+import HollowWorld.ECS.Components.Combat.Combat;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.ECS.Logger;
+import HollowWorld.ECS.GameSystems.MovementSystem;
+import HollowWorld.ECS.GameSystems.PhysicsSystem;
+import HollowWorld.ECS.GameSystems.RenderSystem;
+
+import static HollowWorld.GameCode.EntityFactory.*;
+import static HollowWorld.Main.Main.SCREENHEIGHT;
+import static HollowWorld.Main.Main.SCREENWIDTH;
+
 
 public class MainGame extends AbstractBoilerPlateGame {
-    EntityFactory entityFactory = new EntityFactory();
+
     @Override
     public void init() {
-        GameObject player = entityFactory.makePlayer();
+        // Systeme Registrieren
+        addSystem(new PhysicsSystem());
+        addSystem(new MovementSystem());
+
+        setWorldMap(new WorldMap(SCREENWIDTH / 32,SCREENHEIGHT / 32));
+
+
+        GameObject player = makePlayer();
         addGameObject(player);
-
-
-        System.out.println(getGameObjects().get(0).getName());
-
 
     }
 }

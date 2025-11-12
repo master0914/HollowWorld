@@ -1,9 +1,10 @@
 package HollowWorld.ECS.GameSystems;
 
-import Engine.GameContainer;
-import Engine.Renderer;
+import Engine.Core.GameContainer;
+import Engine.Core.Renderer;
 import HollowWorld.ECS.Components.Component;
 import HollowWorld.ECS.GameObjects.GameObject;
+import HollowWorld.GameCode.WorldMap;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +16,8 @@ public abstract class GameSystem {
     public abstract void initialize();
 
     // haupt update methode
-    public abstract void update(GameContainer gc, float deltaTime, List<GameObject> gameObjects);
-    public void render(GameContainer gc, Renderer renderer, List<GameObject> gameObjects) {}
+    public void update(GameContainer gc, float dt, List<GameObject> gameObjects, WorldMap map) {}
+    public void render(GameContainer gc, Renderer renderer, List<GameObject> gameObjects, WorldMap map) {}
 
     // Muss beim entfernen aufgerufen werden
     public void cleanup() {}

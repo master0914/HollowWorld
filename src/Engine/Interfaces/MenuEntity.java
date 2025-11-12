@@ -1,6 +1,8 @@
-package Engine;
+package Engine.Interfaces;
 
-public abstract class MenuEntity extends GameEntity{
+import Engine.Core.Input;
+
+public abstract class MenuEntity extends GameEntity {
     protected int width;
     protected int height;
     public MenuEntity(int x, int y, int w, int h) {

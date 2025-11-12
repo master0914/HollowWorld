@@ -1,10 +1,13 @@
 package HollowWorld.ECS;
 
-import Engine.AbstractGame;
-import Engine.GameContainer;
-import Engine.Renderer;
+import Engine.Interfaces.AbstractGame;
+import Engine.Core.GameContainer;
+import Engine.Logger;
+import Engine.Core.Renderer;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.GameSystem;
+import HollowWorld.ECS.GameSystems.RenderSystem;
+import HollowWorld.GameCode.WorldMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,27 +17,30 @@ import java.util.stream.Collectors;
 public abstract class AbstractBoilerPlateGame extends AbstractGame {
     private List<GameObject> gameObjects = new ArrayList<>();
     private List<GameSystem> systems = new ArrayList<>();
-
+    private RenderSystem renderSystem = new RenderSystem();
+    private WorldMap worldMap;
 
 
     @Override
     public void update(GameContainer gc, float dt) {
+        if(worldMap == null){
+            Logger.error("WorldMap must be initialized in init()");
+        }
         for (GameSystem system : systems) {
             if (system.isEnabled()) {
-                system.update(gc, dt, gameObjects);
+                system.update(gc, dt, gameObjects, worldMap);
             }
         }
         for (GameObject obj : gameObjects) {
-            obj.update(dt);
+            obj.update(gc,dt);
         }
         gameObjects.removeIf(obj -> !obj.isActive());
     }
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-        for (GameObject obj : gameObjects) {
-            obj.render(r);
-        }
+        r.drawBackground(0xfff0ff0f);
+        renderSystem.render(gc,r,gameObjects,worldMap);
         // evtl RenderSystems
     }
 
@@ -80,7 +86,11 @@ public abstract class AbstractBoilerPlateGame extends AbstractGame {
                 return type.cast(system);
             }
         }
-        //@TODO logging
+        Logger.warn("requested System not available");
         return null;
+    }
+
+    public void setWorldMap(WorldMap map){
+        worldMap = map;
     }
 }

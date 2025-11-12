@@ -1,8 +1,8 @@
 package Engine.gfx;
 
-import Engine.GameContainer;
-import Engine.MenuEntity;
-import Engine.Renderer;
+import Engine.Core.GameContainer;
+import Engine.Interfaces.MenuEntity;
+import Engine.Core.Renderer;
 
 import java.awt.event.MouseEvent;
 
