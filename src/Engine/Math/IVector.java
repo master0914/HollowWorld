@@ -36,4 +36,8 @@ public class IVector {
     public void printVector(){
         System.out.println("V:   x: " + x + " y: " + y + " |V|: " + absoluteValue);
     }
+
+    public String toString(){
+        return "(" + x + ", " + y + ")";
+    }
 }

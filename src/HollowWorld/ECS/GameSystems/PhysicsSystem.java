@@ -32,35 +32,38 @@ public class PhysicsSystem extends GameSystem{
                 Logger.info("No MovementCacluation for notKinematic obj: " + obj.getName());
                 continue;
             }
-                // Gravitation hinzufügen wenn nicht am boden
-                if(!rb.isGrounded){
-                    rb.velocity.y += 800.0f * rb.gravityScale * dt;
-                }
+            rb.isGrounded = false;
+            // Gravitation hinzufügen wenn nicht am boden
+            if(!rb.isGrounded){
+                rb.velocity.y += 800.0f * rb.gravityScale * dt;
+            }
+
 //                Logger.info(rb.velocity.x  + "  "+rb.velocity.y);
 
-                // Bewegung
-                float newX = tf.x + (rb.velocity.x * dt);
-                float newY = tf.y + (rb.velocity.y * dt);
+            // Bewegung
+            float newX = tf.x + (rb.velocity.x * dt);
+            float newY = tf.y + (rb.velocity.y * dt);
 
-                resolveMapCollisions(tf, rb, col, newX, newY, map);
+            resolveMapCollisions(tf, rb, col, newX, newY, map);
 
 //                Logger.info(tf.x  + "  "+tf.y);
 
-                tf.x = (int) newX;
-                tf.y = (int) newY;
+            tf.x = (int) newX;
+            tf.y = (int) newY;
 
         }
     }
 
     private void resolveMapCollisions(Transform tf, RigidBody rb, Collider collider,
                                       float newX, float newY, WorldMap map) {
+        // TODO collisions richtig für kreis collider berechnen
         int tileSize = 32;
 
-        // Collider-Größe verwenden
+        // collider sizes setzn
         float width = (collider.type == Collider.ColliderType.BOX) ? collider.width : collider.radius * 2;
         float height = (collider.type == Collider.ColliderType.BOX) ? collider.height : collider.radius * 2;
 
-        // Horizontale Kollision
+        // horizontale Collisions
         if(rb.velocity.x != 0) {
             int gridYBottom = (int)((newY + height - 1) / tileSize);
             int gridYTop = (int)(newY / tileSize);
@@ -80,7 +83,7 @@ public class PhysicsSystem extends GameSystem{
             }
         }
 
-        // Vertikale Kollision
+        // vertikale collisions
         if(rb.velocity.y != 0) {
             int gridXLeft = (int)(newX / tileSize);
             int gridXRight = (int)((newX + width - 1) / tileSize);
@@ -106,7 +109,7 @@ public class PhysicsSystem extends GameSystem{
             for(int gridY = startY; gridY <= endY; gridY++) {
                 if(gridX < 0 || gridX >= map.getWidth() ||
                         gridY < 0 || gridY >= map.getHeight()) {
-                    continue; // Oder return true für World-Grenzen
+                    return false;
                 }
                 if(map.isSolid(gridX, gridY)) return true;
             }

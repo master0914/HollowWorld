@@ -3,8 +3,8 @@ package HollowWorld.ECS.Components.Terraria;
 import Engine.gfx.Image;
 
 public enum BlockType {
-    DIRT(1.0f,ItemType.Test, "/Blocks/MinecraftDirtTexture.png", true),
-    STONE(3.0f,ItemType.Test, "/Blocks/MinecraftStoneTexture.png", true),
+    DIRT(1.0f,ItemType.Test, "/Blocks/DirtBlock.png", true),
+    STONE(3.0f,ItemType.Test, "/Blocks/StoneBlock.png", true),
     AIR(0.0f,null,null, false);
 
     public final float hardness;

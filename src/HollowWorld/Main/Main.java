@@ -24,4 +24,8 @@ public class Main {
         gc.start();
 
     }
+
+    // NEXT to do list:
+    // Animation: AnimationComponent, AnimationSystem, Integration in RenderSystem
+    // Inventory: Items, InventoryComponent, Integration in RenderSystem
 }

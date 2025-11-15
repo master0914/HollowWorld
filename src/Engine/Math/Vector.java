@@ -48,4 +48,8 @@ public class Vector{
     public IVector getIVector(){
         return new IVector((int)Math.round(x),(int)Math.round(y));
     }
+
+    public String toString(){
+        return "(" + x + ", " + y + ")";
+    }
 }
