@@ -1,9 +1,7 @@
 package HollowWorld.GameCode;
 
-import HollowWorld.ECS.Components.Core.Collider;
-import HollowWorld.ECS.Components.Core.RigidBody;
-import HollowWorld.ECS.Components.Core.SpriteComponent;
-import HollowWorld.ECS.Components.Core.Transform;
+import Engine.gfx.ImageTile;
+import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
 import HollowWorld.ECS.Components.Player.PlatformerMovement;
 import HollowWorld.ECS.Components.Player.PlayerInput;
@@ -15,10 +13,22 @@ public class EntityFactory {
         player.setTag("Player");
         // core
         player.addComponent(new Transform(100,100));
+        ImageTile spriteSheet = new ImageTile("/DarkSamurai (64x64).png", 64,64);
+        // animator
+        Animator animator = new Animator();
+
+        Animation idle = new Animation(0.2f,spriteSheet.getImagesFromRange(0,7,0));
+        animator.addAnimation(Animator.AnimationState.IDLE, idle);
+
+        Animation run = new Animation(0.2f,spriteSheet.getImagesFromRange(0,7,1));
+        animator.addAnimation(Animator.AnimationState.RUN, run);
+
+        player.addComponent(animator);
+
         player.addComponent(new SpriteComponent("/Test/TestSmiley.png"));
         // physics
         player.addComponent(new RigidBody());
-        player.addComponent(new Collider(32,32));
+        player.addComponent(new Collider(32,48));
         // movement
         player.addComponent(new PlayerInput());
         player.addComponent(new PlatformerMovement());

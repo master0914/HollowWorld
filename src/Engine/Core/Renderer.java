@@ -50,7 +50,7 @@ public class Renderer {
         }
     }
 
-    public void drawImage(Image image, int offX, int offY){
+    public void drawImage(Image image, int offX, int offY, boolean reversed){
 
         if(offX < -image.getW()) return;
         if(offY < -image.getH()) return;
@@ -69,9 +69,16 @@ public class Renderer {
         if(offX + newWidth > pW){ newWidth -= newWidth + offX - pW; }
         if(offY + newHeight > pH){ newHeight -= newHeight + offY - pH; }
 
+        int imgW = image.getW();
+        int[] pixels = image.getP();
+
         for(int y = newY; y < newHeight;y++){
             for(int x = newX; x < newWidth;x++){
-                setPixel(x + offX, y +offY, image.getP()[x+y*image.getW()]);
+                int srcX = reversed ? (imgW - 1 - x) : x;
+
+                int col = pixels[srcX + y * imgW];
+
+                setPixel(x + offX, y + offY, col);
             }
         }
     }

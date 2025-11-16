@@ -26,6 +26,6 @@ public class Main {
     }
 
     // NEXT to do list:
-    // Animation: AnimationComponent, AnimationSystem, Integration in RenderSystem
     // Inventory: Items, InventoryComponent, Integration in RenderSystem
+    // bug: richitge behandlung der position für im Bild verschobene charaktere z.b. DarkSamurai.png
 }

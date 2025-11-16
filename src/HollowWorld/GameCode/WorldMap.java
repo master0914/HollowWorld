@@ -33,6 +33,9 @@ public class WorldMap {
                 blocks[x][y] = type;
             }
         }
+        blocks[3][7] = BlockType.STONE;
+        blocks[3][8] = BlockType.STONE;
+        blocks[8][8] = BlockType.STONE;
     }
 
     public boolean isSolid(int gridX, int gridY){

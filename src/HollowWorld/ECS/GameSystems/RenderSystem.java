@@ -4,6 +4,8 @@ import Engine.Core.GameContainer;
 import Engine.Core.Renderer;
 import Engine.Logger;
 import Engine.Math.Vector;
+import HollowWorld.ECS.Components.Core.Animation;
+import HollowWorld.ECS.Components.Core.Animator;
 import HollowWorld.ECS.Components.Core.SpriteComponent;
 import HollowWorld.ECS.Components.Core.Transform;
 import HollowWorld.ECS.Components.Player.CameraFollow;
@@ -23,26 +25,47 @@ public class RenderSystem extends GameSystem{
 
     @Override
     public void render(GameContainer gc, Renderer renderer, List<GameObject> gameObjects, WorldMap map) {
-        Logger.info(cameraPosition.toString());
+        //Logger.info(cameraPosition.toString());
         updateCamera(gameObjects);
-        renderObjects(gc,renderer,gameObjects);
+        renderObjectsWithAnimator(renderer,gameObjects);
+        renderObjectsWithSprite(renderer,gameObjects);
         renderMap(gc,renderer,map);
 
     }
 
-    private void renderObjects(GameContainer gc, Renderer renderer, List<GameObject> gameObjects){
-
+    private void renderObjectsWithSprite(Renderer renderer, List<GameObject> gameObjects){
         // ObjectRendering     @TODO animationen verarbeiten
         for(GameObject obj: getObjectsWithComponent(SpriteComponent.class, gameObjects)){
+            if(obj.hasComponent(Animator.class)){continue;}
+
             SpriteComponent spriteComponent = obj.getComponent(SpriteComponent.class);
             Transform transform = obj.getTransform();
             if(transform == null){
                 Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform");
                 continue;
             }
-            renderer.drawImage(spriteComponent.image,(int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y));
+            renderer.drawImage(spriteComponent.image,(int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), false);
         }
     }
+    private void renderObjectsWithAnimator(Renderer renderer, List<GameObject> gameObjects){
+        for (GameObject obj : gameObjects) {
+            Animator animator = obj.getComponent(Animator.class);
+            Transform transform = obj.getTransform();
+            SpriteComponent sprite = obj.getComponent(SpriteComponent.class);
+            if(transform == null){Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform"); continue;}
+            if (animator != null) {
+                Animation currentAnim = animator.animations.get(animator.currentState);
+                if (currentAnim == null) {Logger.warn("current Animation for Object: " + obj.getName() + " not existing");}
+                renderer.drawImage(currentAnim.getCurrentFrame(),(int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), animator.flipX);
+
+            } else if (sprite != null) {
+                // fallback falls animation nicht existiert
+                Logger.info("used FallbackSprite for Object: " + obj.getName());
+                renderer.drawImage(sprite.image, (int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), false);
+            }
+        }
+    }
+
     private void renderMap(GameContainer gc, Renderer renderer, WorldMap map){
         int w = map.getWidth();
         int h = map.getHeight();
@@ -52,7 +75,7 @@ public class RenderSystem extends GameSystem{
                 // hier fehlt natürlich noch kamera folgen etc.
                 BlockType block = blocks[gridX][gridY];
                 if(block == BlockType.AIR){continue;}
-                renderer.drawImage(block.sprite, (int) (gridX * 32 - cameraPosition.x), (int) (gridY * 32 - cameraPosition.y));
+                renderer.drawImage(block.sprite, (int) (gridX * 32 - cameraPosition.x), (int) (gridY * 32 - cameraPosition.y), false);
                 renderer.drawRect((int) (gridX * 32 - cameraPosition.x), (int) (gridY *32 - cameraPosition.y), 32,32,0xff111111);
             }
         }
