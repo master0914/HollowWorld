@@ -4,19 +4,19 @@ import Engine.Core.GameContainer;
 import Engine.Core.Renderer;
 import Engine.Logger;
 import Engine.Math.Vector;
-import HollowWorld.ECS.Components.Core.Animation;
-import HollowWorld.ECS.Components.Core.Animator;
-import HollowWorld.ECS.Components.Core.SpriteComponent;
-import HollowWorld.ECS.Components.Core.Transform;
+import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
 import HollowWorld.ECS.Components.Terraria.BlockType;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.GameData.*;
 
 import java.util.List;
 
+import static HollowWorld.GameCode.GameData.cameraPosition;
+
 public class RenderSystem extends GameSystem{
-    private Vector cameraPosition = new Vector(0,0);
+//    private Vector cameraPosition = new Vector(0,0);
 
     @Override
     public void initialize() {
@@ -27,43 +27,63 @@ public class RenderSystem extends GameSystem{
     public void render(GameContainer gc, Renderer renderer, List<GameObject> gameObjects, WorldMap map) {
         //Logger.info(cameraPosition.toString());
         updateCamera(gameObjects);
-        renderObjectsWithAnimator(renderer,gameObjects);
-        renderObjectsWithSprite(renderer,gameObjects);
+        renderObjects(renderer,gameObjects);
         renderMap(gc,renderer,map);
-
+        renderCollider(renderer,gameObjects);
     }
 
-    private void renderObjectsWithSprite(Renderer renderer, List<GameObject> gameObjects){
-        // ObjectRendering     @TODO animationen verarbeiten
-        for(GameObject obj: getObjectsWithComponent(SpriteComponent.class, gameObjects)){
-            if(obj.hasComponent(Animator.class)){continue;}
+    private void renderCollider(Renderer renderer, List<GameObject> gameObjects) {
+        for(GameObject obj: getObjectsWithComponent(Collider.class,gameObjects)){
+            Transform tf = obj.getTransform();
+            Collider col = obj.getComponent(Collider.class);
+            renderer.drawRect((int)(tf.x - cameraPosition.x), (int)(tf.y - cameraPosition.y), col.width,col.height,0xffff0000);
+        }
+    }
 
+    private void renderObjects(Renderer renderer, List<GameObject> gameObjects){
+        for (GameObject obj: gameObjects){
+            if(obj.hasComponent(Animator.class)){
+                renderObjectWithAnimator(renderer, obj);
+            }
+            else if(obj.hasComponent(SpriteComponent.class)){
+                renderObjectWithSprite(renderer,obj);
+            }
+        }
+    }
+
+
+    private void renderObjectWithAnimator(Renderer renderer, GameObject obj){
+
+        Animator animator = obj.getComponent(Animator.class);
+        Transform transform = obj.getTransform();
+        SpriteComponent sprite = obj.getComponent(SpriteComponent.class);
+        if (transform == null) {
+            Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform");
+            return;
+        }
+        if (animator != null) {
+            Animation currentAnim = animator.animations.get(animator.currentState);
+            if (currentAnim == null) {
+                Logger.warn("current Animation for Object: " + obj.getName() + " not existing");
+                return;
+            }
+            renderer.drawImage(currentAnim.getCurrentFrame(), (int) (transform.x - cameraPosition.x), (int) (transform.y - cameraPosition.y), animator.flipX);
+
+        } else if (sprite != null) {
+            // fallback falls animation nicht existiert
+            Logger.info("used FallbackSprite for Object: " + obj.getName());
+            renderer.drawImage(sprite.image, (int) (transform.x - cameraPosition.x), (int) (transform.y - cameraPosition.y), false);
+        }
+    }
+    private void renderObjectWithSprite(Renderer renderer, GameObject obj){
             SpriteComponent spriteComponent = obj.getComponent(SpriteComponent.class);
             Transform transform = obj.getTransform();
             if(transform == null){
                 Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform");
-                continue;
+                return;
             }
             renderer.drawImage(spriteComponent.image,(int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), false);
-        }
-    }
-    private void renderObjectsWithAnimator(Renderer renderer, List<GameObject> gameObjects){
-        for (GameObject obj : gameObjects) {
-            Animator animator = obj.getComponent(Animator.class);
-            Transform transform = obj.getTransform();
-            SpriteComponent sprite = obj.getComponent(SpriteComponent.class);
-            if(transform == null){Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform"); continue;}
-            if (animator != null) {
-                Animation currentAnim = animator.animations.get(animator.currentState);
-                if (currentAnim == null) {Logger.warn("current Animation for Object: " + obj.getName() + " not existing");}
-                renderer.drawImage(currentAnim.getCurrentFrame(),(int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), animator.flipX);
 
-            } else if (sprite != null) {
-                // fallback falls animation nicht existiert
-                Logger.info("used FallbackSprite for Object: " + obj.getName());
-                renderer.drawImage(sprite.image, (int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), false);
-            }
-        }
     }
 
     private void renderMap(GameContainer gc, Renderer renderer, WorldMap map){
@@ -75,6 +95,7 @@ public class RenderSystem extends GameSystem{
                 // hier fehlt natürlich noch kamera folgen etc.
                 BlockType block = blocks[gridX][gridY];
                 if(block == BlockType.AIR){continue;}
+                if(block.sprite == null){Logger.error("Tried to render Block: " + block.name() + ". Blocktype has no sprite!"); return;}
                 renderer.drawImage(block.sprite, (int) (gridX * 32 - cameraPosition.x), (int) (gridY * 32 - cameraPosition.y), false);
                 renderer.drawRect((int) (gridX * 32 - cameraPosition.x), (int) (gridY *32 - cameraPosition.y), 32,32,0xff111111);
             }
@@ -108,3 +129,42 @@ public class RenderSystem extends GameSystem{
         return a + (b - a) * t;
     }
 }
+
+
+//private void renderObjectsWithSprite(Renderer renderer, List<GameObject> gameObjects){
+//    for(GameObject obj: getObjectsWithComponent(SpriteComponent.class, gameObjects)){
+//        if(obj.hasComponent(Animator.class)){continue;}
+//
+//        SpriteComponent spriteComponent = obj.getComponent(SpriteComponent.class);
+//        Transform transform = obj.getTransform();
+//        if(transform == null){
+//            Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform");
+//            continue;
+//        }
+//        renderer.drawImage(spriteComponent.image,(int)(transform.x - cameraPosition.x), (int)(transform.y - cameraPosition.y), false);
+//    }
+//}
+//private void renderObjectsWithAnimator(Renderer renderer, List<GameObject> gameObjects){
+//    for (GameObject obj : getObjectsWithComponent(Animator.class, gameObjects)) {
+//
+//        Animator animator = obj.getComponent(Animator.class);
+//        Transform transform = obj.getTransform();
+//        SpriteComponent sprite = obj.getComponent(SpriteComponent.class);
+//        if (transform == null) {
+//            Logger.warn("Object: " + obj.getName() + "cannot be Rendered due to missing Transform");
+//            continue;
+//        }
+//        if (animator != null) {
+//            Animation currentAnim = animator.animations.get(animator.currentState);
+//            if (currentAnim == null) {
+//                Logger.warn("current Animation for Object: " + obj.getName() + " not existing");
+//            }
+//            renderer.drawImage(currentAnim.getCurrentFrame(), (int) (transform.x - cameraPosition.x), (int) (transform.y - cameraPosition.y), animator.flipX);
+//
+//        } else if (sprite != null) {
+//            // fallback falls animation nicht existiert
+//            Logger.info("used FallbackSprite for Object: " + obj.getName());
+//            renderer.drawImage(sprite.image, (int) (transform.x - cameraPosition.x), (int) (transform.y - cameraPosition.y), false);
+//        }
+//    }
+//}

@@ -20,8 +20,6 @@ public class AnimationSystem extends GameSystem{
 
     @Override
     public void update(GameContainer gc, float dt, List<GameObject> gameObjects, WorldMap map) {
-
-
         for(GameObject obj: getObjectsWithComponent(Animator.class, gameObjects)){
             Animator animator = obj.getComponent(Animator.class);
 

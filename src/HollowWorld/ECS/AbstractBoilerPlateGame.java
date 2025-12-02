@@ -7,6 +7,7 @@ import Engine.Core.Renderer;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.GameSystem;
 import HollowWorld.ECS.GameSystems.RenderSystem;
+import HollowWorld.GameCode.EventManager;
 import HollowWorld.GameCode.WorldMap;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public abstract class AbstractBoilerPlateGame extends AbstractGame {
     private List<GameSystem> systems = new ArrayList<>();
     private RenderSystem renderSystem = new RenderSystem();
     private WorldMap worldMap;
+
 
 
     @Override
@@ -35,6 +37,7 @@ public abstract class AbstractBoilerPlateGame extends AbstractGame {
             obj.update(gc,dt);
         }
         gameObjects.removeIf(obj -> !obj.isActive());
+        EventManager.clear();
     }
 
     @Override

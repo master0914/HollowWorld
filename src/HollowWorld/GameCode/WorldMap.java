@@ -7,8 +7,8 @@ import HollowWorld.ECS.GameObjects.GameObject;
 
 public class WorldMap {
     private BlockType[][] blocks;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private int tileSize;
 
     public WorldMap(int width, int height){

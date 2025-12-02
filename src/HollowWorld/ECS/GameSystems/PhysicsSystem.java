@@ -19,8 +19,14 @@ public class PhysicsSystem extends GameSystem{
 
     @Override
     public void update(GameContainer gc, float dt, List<GameObject> gameObjects, WorldMap map) {
+        List<GameObject> rigidBodies = getObjectsWithComponent(RigidBody.class, gameObjects);
+        updatePhysics(gc,dt,rigidBodies,map);
+        resolveGameObjectCollisions(rigidBodies);
+    }
 
-        for(GameObject obj: getObjectsWithComponent(RigidBody.class, gameObjects)){
+    // physics and world Collision
+    private void updatePhysics(GameContainer gc, float dt, List<GameObject> rigidBodies, WorldMap map){
+        for(GameObject obj: rigidBodies){
             RigidBody rb = obj.getComponent(RigidBody.class);
             Transform tf = obj.getTransform();
             Collider col = obj.getComponent(Collider.class);
@@ -34,10 +40,10 @@ public class PhysicsSystem extends GameSystem{
                 continue;
             }
             rb.isGrounded = false;
-            // Gravitation hinzufügen wenn nicht am boden
-            if(!rb.isGrounded){
-                rb.velocity.y += 800.0f * rb.gravityScale * dt;
-            }
+
+            // später vllt noch grounded checken
+            rb.velocity.y += 800.0f * rb.gravityScale * dt;
+
 
 //                Logger.info(rb.velocity.x  + "  "+rb.velocity.y);
 
@@ -49,12 +55,8 @@ public class PhysicsSystem extends GameSystem{
             float newY = tf.y + (rb.velocity.y * dt);
             float correctedY = resolveVertical(rb,col,tf.x,newY,map);
             tf.y = (int) correctedY;
-
         }
     }
-
-
-
     private float resolveHorizontal(RigidBody rb, Collider col, float newX, float currentY, WorldMap map){
         int tileSize = 32;
 
@@ -104,7 +106,6 @@ public class PhysicsSystem extends GameSystem{
         }
         return newY;
     }
-
     private boolean isAreaSolid(int startX, int startY, int endX, int endY, WorldMap map) {
         for(int gridX = startX; gridX <= endX; gridX++) {
             for(int gridY = startY; gridY <= endY; gridY++) {
@@ -118,57 +119,179 @@ public class PhysicsSystem extends GameSystem{
         return false;
     }
 
-    //    private Vector resolveMapCollisions(RigidBody rb, Collider collider,
-//                                        float newX, float newY, WorldMap map) {
-//        // TODO collisions richtig für kreis collider berechnen
-//        Vector correctedPosition = new Vector(newX,newY);
-//
-//        int tileSize = 32;
-//
-//        // collider sizes setzn
-//        float width = (collider.type == Collider.ColliderType.BOX) ? collider.width : collider.radius * 2;
-//        float height = (collider.type == Collider.ColliderType.BOX) ? collider.height : collider.radius * 2;
-//
-//        // horizontale Collisions
-//        if(rb.velocity.x != 0) {
-//            int gridYBottom = (int)((newY + height - 1) / tileSize);
-//            int gridYTop = (int)(newY / tileSize);
-//
-//            if(rb.velocity.x > 0) { // Rechts
-//                int gridX = (int)((newX + width) / tileSize);
-//                if(isAreaSolid(gridX, gridYTop, gridX, gridYBottom, map)) {
-//                    correctedPosition.x = gridX * tileSize - width;
-//                    rb.velocity.x = 0;
-//                }
-//            } else { // Links
-//                int gridX = (int)(newX / tileSize);
-//                if(isAreaSolid(gridX, gridYTop, gridX, gridYBottom, map)) {
-//                    correctedPosition.x = (gridX + 1) * tileSize;
-//                    rb.velocity.x = 0;
-//                }
-//            }
-//        }
-//
-//        // vertikale collisions
-//        if(rb.velocity.y != 0) {
-//            int gridXLeft = (int)(newX / tileSize);
-//            int gridXRight = (int)((newX + width - 1) / tileSize);
-//
-//            if(rb.velocity.y > 0) { // Unten
-//                int gridY = (int)((newY + height) / tileSize);
-//                if(isAreaSolid(gridXLeft, gridY, gridXRight, gridY, map)) {
-//                    correctedPosition.y = gridY * tileSize - height;
-//                    rb.velocity.y = 0;
-//                    rb.isGrounded = true;
-//                }
-//            } else { // Oben
-//                int gridY = (int)(newY / tileSize);
-//                if(isAreaSolid(gridXLeft, gridY, gridXRight, gridY, map)) {
-//                    correctedPosition.y = (gridY + 1) * tileSize;
-//                    rb.velocity.y = 0;
-//                }
-//            }
-//        }
-//        return correctedPosition;
-//    }
+    // obj,obj collision
+    private void resolveGameObjectCollisions(List<GameObject> rigidBodies){
+        // kollisionspaare finden
+        for (int i = 0; i < rigidBodies.size(); i++){
+            for(int j = i + 1; j < rigidBodies.size(); j++){
+                GameObject A = rigidBodies.get(i);
+                GameObject B = rigidBodies.get(j);
+                if(doesCollide(A,B)){
+                    resolveCollision(A,B);
+                }
+            }
+        }
+    }
+    private boolean doesCollide(GameObject A, GameObject B){
+        Transform tfA = A.getTransform();
+        Transform tfB = B.getTransform();
+        Collider colA = A.getComponent(Collider.class);
+        Collider colB = B.getComponent(Collider.class);
+
+        if(tfA == null){Logger.error("Object: " + A.getName() + " has no Transform!!"); return false;}
+        if(tfB == null){Logger.error("Object: " + B.getName() + " has no Transform!!"); return false;}
+        if(colA == null){Logger.error("Object: " + A.getName() + " has no Collider!!"); return false;}
+        if(colB == null){Logger.error("Object: " + B.getName() + " has no Collider!!"); return false;}
+
+        // bisher nur für BOX type collider
+        if(colA.type != Collider.ColliderType.BOX || colB.type != Collider.ColliderType.BOX){
+            Logger.error("Collision check only implemented for BOX colliders!");return false;}
+
+        int ax = tfA.x;
+        int ay = tfA.y;
+        int aw = colA.width;
+        int ah = colA.height;
+
+        int bx = tfB.x;
+        int by = tfB.y;
+        int bw = colB.width;
+        int bh = colB.height;
+
+        // aabb collision
+        boolean overlapX = ax < bx + bw && ax + aw > bx;
+        boolean overlapY = ay < by + bh && ay + ah > by;
+
+        return overlapX && overlapY;
+    }
+    private void resolveCollision(GameObject A, GameObject B){
+        // bitte funktionier endlich richtig
+
+        RigidBody rbA = A.getComponent(RigidBody.class);
+        RigidBody rbB = B.getComponent(RigidBody.class);
+        Transform tfA = A.getTransform();
+        Transform tfB = B.getTransform();
+        Collider colA = A.getComponent(Collider.class);
+        Collider colB = B.getComponent(Collider.class);
+
+        int leftA   = tfA.x;
+        int rightA  = tfA.x + colA.width;
+        int topA    = tfA.y;
+        int bottomA = tfA.y + colA.height;
+
+        int leftB   = tfB.x;
+        int rightB  = tfB.x + colB.width;
+        int topB    = tfB.y;
+        int bottomB = tfB.y + colB.height;
+
+        int overlapX = Math.min(rightA - leftB, rightB - leftA);
+        int overlapY = Math.min(bottomA - topB, bottomB - topA);
+
+        // falls keine wird abgebrochen. sollte eig nie passieren
+        if (overlapX <= 0 || overlapY <= 0) return;
+
+        if (overlapX < overlapY) {  // horizontale collision
+            boolean AisMoving = (Math.abs(rbA.velocity.x) > 0.1f);
+            boolean BisMoving = (Math.abs(rbB.velocity.x) > 0.1f);
+
+            if (AisMoving && !BisMoving) {
+                // nur a bewegt sich
+                if (leftA < leftB) {
+                    tfA.x = leftB - colA.width;
+                } else {
+                    tfA.x = leftB + colB.width;
+                }
+            }
+            else if (!AisMoving && BisMoving) {
+                // nur b bewegt sich
+                if (leftB < leftA) {
+                    tfB.x = leftA - colB.width;
+                } else {
+                    tfB.x = leftA + colA.width;
+                }
+            }
+            else if (AisMoving && BisMoving) {
+                // beide bewegen sich: leicht auseinander schieben
+                int push = (int)(overlapX / 2f);
+                if (leftA < leftB) {
+                    tfA.x -= push;
+                    tfB.x += push;
+                } else {
+                    tfA.x += push;
+                    tfB.x -= push;
+                }
+            }
+            if (rbA.isKinematic) rbA.velocity.x = 0;
+            if (rbB.isKinematic) rbB.velocity.x = 0;
+
+        }
+        else {          // vertikale Kollision
+            boolean AisMovingDown = rbA.velocity.y > 0.1f;
+            boolean AisMovingUp = rbA.velocity.y < -0.1f;
+            boolean BisMovingDown = rbB.velocity.y > 0.1f;
+            boolean BisMovingUp = rbB.velocity.y < -0.1f;
+
+            boolean AisMoving = AisMovingDown || AisMovingUp;
+            boolean BisMoving = BisMovingDown || BisMovingUp;
+
+            boolean AisAbove = topA < topB;
+            boolean BisAbove = topB < topA;
+
+            if (AisAbove) {
+                // A fällt auf B
+                if (AisMovingDown && !BisMovingUp) {
+                    tfA.y = topB - colA.height;  // A direkt über B platzieren
+                    rbA.velocity.y = 0;
+                    rbA.isGrounded = true;
+
+                }
+                // B springt gegen A von unten
+                else if (BisMovingUp && !AisMovingDown) {
+                    tfB.y = topA - colB.height;  // B direkt unter A platzieren
+                    rbB.velocity.y = 0;
+
+                }
+                // aufeinander zu bewegen
+                else if (AisMovingDown && BisMovingUp) {
+                    int push = (int)(overlapY / 2f);
+                    tfA.y -= push;
+                    tfB.y += push;
+                    rbA.velocity.y = 0;
+                    rbB.velocity.y = 0;
+                }
+                else {
+                    int push = (int)(overlapY / 2f);
+                    tfA.y -= push;
+                    tfB.y += push;
+                }
+            }
+            else {  // B über A
+                // B fällt auf A
+                if (BisMovingDown && !AisMovingUp) {
+                    tfB.y = topA - colB.height;
+                    rbB.velocity.y = 0;
+                    rbB.isGrounded = true;
+                }
+                // A springt gegen B von unten
+                else if (AisMovingUp && !BisMovingDown) {
+                    tfA.y = topB - colA.height;
+                    rbA.velocity.y = 0;
+                }
+                // aufeinander zu bewegen
+                else if (BisMovingDown && AisMovingUp) {
+                    int push = (int)(overlapY / 2f);
+                    tfB.y -= push;
+                    tfA.y += push;
+                    rbA.velocity.y = 0;
+                    rbB.velocity.y = 0;
+                }
+                else {
+                    int push = (int)(overlapY / 2f);
+                    tfB.y -= push;
+                    tfA.y += push;
+                }
+            }
+        }
+    }
 }
+
+

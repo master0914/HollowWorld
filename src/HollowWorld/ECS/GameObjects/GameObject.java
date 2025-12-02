@@ -58,9 +58,22 @@ public class GameObject {
         Logger.warn("tried to get Component: "+type.toString()+" of obj: " + name +". obj does not have this component");
         return null;
     }
+    public <T extends Component> T getComponentWithoutWarn(Class<T> type) {
+        Component component = components.get(type);
+        if (type.isInstance(component)) {
+            return type.cast(component);
+        }
+        for (Component comp : components.values()) {
+            if (type.isInstance(comp)) {
+                return type.cast(comp);
+            }
+        }
+
+        return null;
+    }
 
     public boolean hasComponent(Class<? extends Component> type) {
-        return getComponent(type) != null;
+        return getComponentWithoutWarn(type) != null;
     }
 
     public void removeComponent(Class<? extends Component> type) {
