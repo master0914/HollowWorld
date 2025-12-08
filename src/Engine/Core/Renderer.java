@@ -83,6 +83,61 @@ public class Renderer {
         }
     }
 
+    public void drawImage(Image image, int offX, int offY, boolean reversed, float scale) {
+        if (scale <= 0) return;
+
+        int scaledWidth = (int)(image.getW() * scale);
+        int scaledHeight = (int)(image.getH() * scale);
+
+        if (offX < -scaledWidth) return;
+        if (offY < -scaledHeight) return;
+        if (offX >= pW) return;
+        if (offY >= pH) return;
+
+        int startX = 0;
+        int startY = 0;
+        int renderWidth = scaledWidth;
+        int renderHeight = scaledHeight;
+
+        if (offX < 0) {
+            startX = -offX;
+            renderWidth = scaledWidth + offX;
+        }
+        if (offY < 0) {
+            startY = -offY;
+            renderHeight = scaledHeight + offY;
+        }
+        if (offX + renderWidth > pW) {
+            renderWidth = pW - offX;
+        }
+        if (offY + renderHeight > pH) {
+            renderHeight = pH - offY;
+        }
+
+        if (renderWidth <= 0 || renderHeight <= 0) return;
+
+        int imgW = image.getW();
+        int imgH = image.getH();
+        int[] pixels = image.getP();
+
+        for (int y = startY; y < renderHeight; y++) {
+            for (int x = startX; x < renderWidth; x++) {
+                // Quelle-Pixel im Originalbild berechnen
+                int srcX = (int)(x / scale);
+                int srcY = (int)(y / scale);
+
+                // Sicherstellen, dass wir innerhalb des Originalbildes bleiben
+                if (srcX >= 0 && srcX < imgW && srcY >= 0 && srcY < imgH) {
+                    // Wenn reversed, X-Koordinate spiegeln
+                    int finalSrcX = reversed ? (imgW - 1 - srcX) : srcX;
+
+                    int col = pixels[finalSrcX + srcY * imgW];
+                    setPixel(x + offX, y + offY, col);
+                }
+            }
+        }
+    }
+
     public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY){
 
         // Nicht Render bedingungen
