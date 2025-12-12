@@ -127,11 +127,19 @@ public class PhysicsSystem extends GameSystem{
                 GameObject A = rigidBodies.get(i);
                 GameObject B = rigidBodies.get(j);
                 if(doesCollide(A,B)){
+                    handleCollision(A,B);
+                    // wenn nötig das resolveCollision erst in handleCollision aufrufen, da man nicht immer die Objekte
+                    // zurück Bewegen will. ZB wenn man nur eine TriggerBox hat
                     resolveCollision(A,B);
                 }
             }
         }
     }
+
+    private void handleCollision(GameObject a, GameObject b) {
+        // Hie kommt dann code wie das trowen von events rein.
+    }
+
     private boolean doesCollide(GameObject A, GameObject B){
         Transform tfA = A.getTransform();
         Transform tfB = B.getTransform();
