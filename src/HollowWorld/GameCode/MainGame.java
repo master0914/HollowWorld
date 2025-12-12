@@ -28,5 +28,6 @@ public class MainGame extends AbstractBoilerPlateGame {
         GameObject player = makePlayer();
         addGameObject(player);
         addGameObject(makeChest());
+        addGameObject(makeItem());
     }
 }
