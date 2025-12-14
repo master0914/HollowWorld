@@ -4,7 +4,7 @@ import HollowWorld.ECS.Components.Component;
 
 public class PlatformerMovement extends Component {
     // Bewegung
-    public float moveSpeed = 100f;
+    public float moveSpeed = 200f;
     public float jumpForce = 400f;
     public float wallJumpForce = 10f;
     public int maxAirJumps = 1;
