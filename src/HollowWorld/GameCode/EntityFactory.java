@@ -7,6 +7,7 @@ import HollowWorld.ECS.Components.Player.PlatformerMovement;
 import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.Components.Terraria.ItemComponent;
+import HollowWorld.ECS.Components.Terraria.ItemType;
 
 public class EntityFactory {
     public static GameObject makePlayer() {
@@ -48,10 +49,13 @@ public class EntityFactory {
         return chest;
     }
 
-    public static GameObject makeItem(){
+    public static GameObject makeItem(ItemType nItem){
         GameObject item = new GameObject("Item");
-        item.addComponent(new Transform(190, 100));
-        item.addComponent(new ItemComponent(001));
+        item.addComponent(new Transform(180, 100));
+        item.addComponent(new ItemComponent(nItem));
+
+        item.addComponent(new RigidBody());
+        item.addComponent(new Collider(32, 32));
 
         return item;
 

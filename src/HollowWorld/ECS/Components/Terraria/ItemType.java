@@ -24,7 +24,13 @@ public enum ItemType {
         }else {sprite = null;}
     }
 
+
+    public String getTexturePath(ItemType item){
+        return item.texturePath;
+    }
     // hier muss natürlich noch viel hin
+
+
 }
 
 
