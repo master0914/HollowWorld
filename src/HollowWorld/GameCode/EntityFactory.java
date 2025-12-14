@@ -56,4 +56,14 @@ public class EntityFactory {
         return item;
 
     }
+
+    public static GameObject makeHit(){//hit soll sich auf den Bereich beziehen, auf welchem der Spieler mit einer Wafe schlägt und somit den dem Gegner Schaden hinzufügen kann
+        GameObject hit = new GameObject("Hit");
+        hit.addComponent(new Transform (84, 145));
+        hit.addComponent(new SpriteComponent("/hitrangePlayer.png"));//vorrübergehende hitrange für den Spieler(zur Visualizierung) außerdem sollte Z. 63 auscodiert werden, da die hitrange nur zum Testen der Fuktionen sichtbar sein sollte.
+        hit.addComponent(new Collider(64,80));//vorrübergehend, Größe muss noch auf den Spieler angepasst werden
+        return hit;
+    }
+
+
 }
