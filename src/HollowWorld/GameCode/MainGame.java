@@ -2,7 +2,6 @@ package HollowWorld.GameCode;
 
 import HollowWorld.ECS.AbstractBoilerPlateGame;
 import HollowWorld.ECS.Components.Combat.Combat;
-import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.AnimationSystem;
 import HollowWorld.ECS.GameSystems.MovementSystem;
@@ -29,6 +28,6 @@ public class MainGame extends AbstractBoilerPlateGame {
         GameObject player = makePlayer();
         addGameObject(player);
         addGameObject(makeChest());
-        addGameObject(makeItem(ItemType.DIRT));
+        addGameObject(makeItem());
     }
 }
