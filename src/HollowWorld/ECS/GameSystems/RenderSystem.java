@@ -3,13 +3,11 @@ package HollowWorld.ECS.GameSystems;
 import Engine.Core.GameContainer;
 import Engine.Core.Renderer;
 import Engine.Logger;
-import Engine.Math.Vector;
 import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
 import HollowWorld.ECS.Components.Terraria.BlockType;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.GameCode.WorldMap;
-import HollowWorld.GameCode.GameData.*;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
 

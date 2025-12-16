@@ -5,10 +5,9 @@ import Engine.Logger;
 import HollowWorld.ECS.Components.Core.Animation;
 import HollowWorld.ECS.Components.Core.Animator;
 import HollowWorld.ECS.Components.Core.RigidBody;
-import HollowWorld.ECS.Components.Core.Transform;
 import HollowWorld.ECS.Components.Player.PlatformerMovement;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
 

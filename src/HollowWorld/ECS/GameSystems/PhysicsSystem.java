@@ -2,12 +2,11 @@ package HollowWorld.ECS.GameSystems;
 
 import Engine.Core.GameContainer;
 import Engine.Logger;
-import Engine.Math.Vector;
 import HollowWorld.ECS.Components.Core.Collider;
 import HollowWorld.ECS.Components.Core.RigidBody;
 import HollowWorld.ECS.Components.Core.Transform;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
 

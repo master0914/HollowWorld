@@ -4,7 +4,7 @@ import Engine.Core.GameContainer;
 import HollowWorld.ECS.Events.MousePressedEvent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.EventManager;
-import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
 

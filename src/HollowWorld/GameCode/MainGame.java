@@ -5,10 +5,10 @@ import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.*;
 import Engine.Core.GameContainer;
 import HollowWorld.ECS.Events.MousePressedEvent;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 import static HollowWorld.GameCode.EntityFactory.*;
 import static HollowWorld.Main.Main.SCREENHEIGHT;

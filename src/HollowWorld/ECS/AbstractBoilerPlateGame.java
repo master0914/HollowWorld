@@ -8,7 +8,7 @@ import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.GameSystem;
 import HollowWorld.ECS.GameSystems.RenderSystem;
 import HollowWorld.GameCode.EventManager;
-import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
