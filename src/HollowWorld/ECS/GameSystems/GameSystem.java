@@ -4,7 +4,7 @@ import Engine.Core.GameContainer;
 import Engine.Core.Renderer;
 import HollowWorld.ECS.Components.Component;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
 import java.util.stream.Collectors;

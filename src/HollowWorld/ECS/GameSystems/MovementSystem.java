@@ -6,7 +6,7 @@ import HollowWorld.ECS.Components.Core.RigidBody;
 import HollowWorld.ECS.Components.Player.PlatformerMovement;
 import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.GameCode.WorldMap;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
 
