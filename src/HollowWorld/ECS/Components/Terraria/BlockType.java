@@ -3,7 +3,7 @@ package HollowWorld.ECS.Components.Terraria;
 import Engine.gfx.Image;
 
 public enum BlockType {
-    DIRT(1.0f,ItemType.DIRT, "/Blocks/DirtBlock.png", true),
+    DIRT(1.0f,ItemType.DIRT, "/Blocks/DirtBlock2.png", true),
     STONE(3.0f,ItemType.STONE, "/Blocks/StoneBlock.png", true),
     AIR(0.0f,null,null, false);
 
