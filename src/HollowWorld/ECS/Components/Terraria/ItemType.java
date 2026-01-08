@@ -25,9 +25,6 @@ public enum ItemType {
     }
 
 
-    public String getTexturePath(ItemType item){
-        return item.texturePath;
-    }
     // hier muss natürlich noch viel hin
 
 

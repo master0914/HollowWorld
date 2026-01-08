@@ -1,6 +1,7 @@
 package HollowWorld.GameCode;
 
 import HollowWorld.ECS.AbstractBoilerPlateGame;
+import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.*;
 import Engine.Core.GameContainer;
@@ -35,7 +36,8 @@ public class MainGame extends AbstractBoilerPlateGame {
         GameObject player = makePlayer();
         addGameObject(player);
         addGameObject(makeChest());
-        addGameObject(makeItem());
+
+
 
         // Hit erst leer, wird beim Klicken erstellt
         hit = null;
@@ -55,4 +57,5 @@ public class MainGame extends AbstractBoilerPlateGame {
         }
         super.update(gc, dt);
     }
+
 }

@@ -49,10 +49,12 @@ public class EntityFactory {
         return chest;
     }
 
-    public static GameObject makeItem(ItemType nItem){
-        GameObject item = new GameObject("Item");
-        item.addComponent(new Transform(180, 100));
+    public static GameObject makeItem(ItemType nItem, int x, int y){
+        System.out.println(nItem);
+        GameObject item = new GameObject(nItem.name());
+        item.addComponent(new Transform(x, y));
         item.addComponent(new ItemComponent(nItem));
+        item.addComponent(new SpriteComponent(nItem.texturePath));
 
         item.addComponent(new RigidBody());
         item.addComponent(new Collider(32, 32));
