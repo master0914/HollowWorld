@@ -43,10 +43,5 @@ public class MovementSystem extends GameSystem{
     }
 
 
-    private GameObject findPlayer(List<GameObject> objects) {
-        return objects.stream()
-                .filter(obj -> "Player".equals(obj.getName()))
-                .findFirst()
-                .orElse(null);
-    }
+
 }

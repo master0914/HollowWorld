@@ -5,7 +5,7 @@ import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.*;
 import Engine.Core.GameContainer;
-import HollowWorld.ECS.Events.MousePressedEvent;
+//import HollowWorld.ECS.Events.MousePressedEvent;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 
@@ -46,15 +46,15 @@ public class MainGame extends AbstractBoilerPlateGame {
 
     @Override
     public void update(GameContainer gc, float dt) {//überprüft, ob die linke Maustaste gedrückt wurde und löst MousePressedEvent aus
-        if (gc.getInput().isButtonDown(MouseEvent.BUTTON1)) {
-            EventManager.addEvent(
-                    new MousePressedEvent(
-                            gc.getInput().getMouseX(),
-                            gc.getInput().getMouseY(),
-                            MouseEvent.BUTTON1
-                    )
-            );
-        }
+//        if (gc.getInput().isButtonDown(MouseEvent.BUTTON1)) {
+//            EventManager.addEvent(
+//                    new MousePressedEvent(
+//                            gc.getInput().getMouseX(),
+//                            gc.getInput().getMouseY(),
+//                            MouseEvent.BUTTON1
+//                    )
+//            );
+//        }
         super.update(gc, dt);
     }
 

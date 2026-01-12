@@ -1,7 +1,8 @@
 package HollowWorld.ECS.GameSystems;
 
 import Engine.Core.GameContainer;
-import HollowWorld.ECS.Events.MousePressedEvent;
+//import HollowWorld.ECS.Events.MousePressedEvent;
+import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.EventManager;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
@@ -26,29 +27,30 @@ public class HitSystem extends GameSystem {
                        List<GameObject> gameObjects,
                        WorldMap worldMap) {
 
-        GameObject player = gameObjects.stream()//durchsucht alle  gameObjects nach dem Spieler
-                .filter(o -> "Player".equals(o.getName()))
-                .findFirst()
-                .orElse(null);
+        GameObject player = findPlayer(gameObjects);
+        PlayerInput input = player.getComponent(PlayerInput.class);
 
-        GameObject hit = gameObjects.stream()//durchsucht alle  gameObjects nach der hitrangeh (hit)
-                .filter(o -> "Hit".equals(o.getName()))
-                .findFirst()
-                .orElse(null);
+        GameObject hit = null;
+        if(hasObjectsByName("Hit",gameObjects)) {
+            hit = getObjectsByName("Hit", gameObjects);
+        }
 
         // MousePressedEvent auswerten
-        for (MousePressedEvent e :
-                EventManager.getEvents(MousePressedEvent.class)) {
-
-            if (player != null && hit == null) {
+        if(input.isMouseLeftJustPressed()) {
+            // player kann nicht mehr null sein da sonst das player.getComponent vorher einen fehler werden würde
+            if (hit == null) {
                 hit = makeHit();
                 gameObjects.add(hit);
                 hitLifetime = 0.3f;//steht für die Dauer der Existenz der hitrange bei einem Schlag (Mausklick) kann bei bedarf verändert werden
+            }else if(hitLifetime <= 0){
+                // das heißt man kann nur angreifen wenn der vorherige schon vorbei ist
+                hit.setActive(true);
+                hitLifetime = 0.3f;
             }
         }
 
         //  Hit folgt dem Spieler
-        if (player != null && hit != null) {
+        if (hit != null) {
             hit.getTransform().x = player.getTransform().x-16;
             hit.getTransform().y = player.getTransform().y-16;
 

@@ -237,65 +237,27 @@ public class PhysicsSystem extends GameSystem{
             boolean BisMovingDown = rbB.velocity.y > 0.1f;
             boolean BisMovingUp = rbB.velocity.y < -0.1f;
 
-            boolean AisMoving = AisMovingDown || AisMovingUp;
-            boolean BisMoving = BisMovingDown || BisMovingUp;
-
-            boolean AisAbove = topA < topB;
-            boolean BisAbove = topB < topA;
-
-            if (AisAbove) {
+            if (AisMovingDown && !BisMovingDown) {
                 // A fällt auf B
-                if (AisMovingDown && !BisMovingUp) {
-                    tfA.y = topB - colA.height;  // A direkt über B platzieren
-                    rbA.velocity.y = 0;
-                    rbA.isGrounded = true;
-
-                }
-                // B springt gegen A von unten
-                else if (BisMovingUp && !AisMovingDown) {
-                    tfB.y = topA - colB.height;  // B direkt unter A platzieren
-                    rbB.velocity.y = 0;
-
-                }
-                // aufeinander zu bewegen
-                else if (AisMovingDown && BisMovingUp) {
-                    int push = (int)(overlapY / 2f);
-                    tfA.y -= push;
-                    tfB.y += push;
-                    rbA.velocity.y = 0;
-                    rbB.velocity.y = 0;
-                }
-                else {
-                    int push = (int)(overlapY / 2f);
-                    tfA.y -= push;
-                    tfB.y += push;
-                }
+                tfA.y = topB - colA.height;
+                rbA.velocity.y = 0;
+                rbA.isGrounded = true;
             }
-            else {  // B über A
+            else if (AisMovingUp && !BisMovingUp) {
+                // A stößt von unten gegen B
+                tfA.y = bottomB;
+                rbA.velocity.y = 0;
+            }
+            else if (BisMovingDown && !AisMovingDown) {
                 // B fällt auf A
-                if (BisMovingDown && !AisMovingUp) {
-                    tfB.y = topA - colB.height;
-                    rbB.velocity.y = 0;
-                    rbB.isGrounded = true;
-                }
-                // A springt gegen B von unten
-                else if (AisMovingUp && !BisMovingDown) {
-                    tfA.y = topB - colA.height;
-                    rbA.velocity.y = 0;
-                }
-                // aufeinander zu bewegen
-                else if (BisMovingDown && AisMovingUp) {
-                    int push = (int)(overlapY / 2f);
-                    tfB.y -= push;
-                    tfA.y += push;
-                    rbA.velocity.y = 0;
-                    rbB.velocity.y = 0;
-                }
-                else {
-                    int push = (int)(overlapY / 2f);
-                    tfB.y -= push;
-                    tfA.y += push;
-                }
+                tfB.y = topA - colB.height;
+                rbB.velocity.y = 0;
+                rbB.isGrounded = true;
+            }
+            else if (BisMovingUp && !AisMovingUp) {
+                // B stößt von unten gegen A
+                tfB.y = bottomA;
+                rbB.velocity.y = 0;
             }
         }
     }
