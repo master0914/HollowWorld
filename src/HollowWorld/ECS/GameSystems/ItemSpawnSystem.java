@@ -2,7 +2,7 @@ package HollowWorld.ECS.GameSystems;
 
 import Engine.Core.GameContainer;
 import HollowWorld.ECS.Components.Terraria.ItemType;
-import HollowWorld.ECS.Events.MousePressedEvent;
+//import HollowWorld.ECS.Events.MousePressedEvent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.EventManager;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
@@ -26,13 +26,13 @@ public class ItemSpawnSystem extends GameSystem {
 
 
         // MousePressedEvent auswerten
-        for (MousePressedEvent e :
+        /*for (MousePressedEvent e :
                 EventManager.getEvents(MousePressedEvent.class)) {
 
 
                 gameObjects.add(makeItem(ItemType.DIRT,100,100));
 
             }
-        }
+        */}
 }
 
