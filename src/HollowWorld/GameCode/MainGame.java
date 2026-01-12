@@ -28,6 +28,7 @@ public class MainGame extends AbstractBoilerPlateGame {
         addSystem(new AnimationSystem());
         addSystem(new ActivateOnMouseClickSystem());
         addSystem(new HitSystem());
+        addSystem(new ItemSpawnSystem());
 
 
 
@@ -36,6 +37,8 @@ public class MainGame extends AbstractBoilerPlateGame {
         GameObject player = makePlayer();
         addGameObject(player);
         addGameObject(makeChest());
+        addGameObject(makeItem(ItemType.DIRT,200,100));
+        addGameObject(makeItem(ItemType.STONE,400,100));
 
 
 

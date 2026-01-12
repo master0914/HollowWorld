@@ -3,8 +3,8 @@ package HollowWorld.ECS.Components.Terraria;
 import Engine.gfx.Image;
 
 public enum ItemType {
-    DIRT(001f,"Einfacher Baustoff","/Blocks/DirtBlock.png"),
-    STONE(002f,"Grundbestandteil der Welt","/Blocks/StoneBlock.png");
+    DIRT(001f,"Einfacher Baustoff","/Items/DirtItem.png"),
+    STONE(002f,"Grundbestandteil der Welt","/Items/StoneItem.png");
 
 
     public final float id;

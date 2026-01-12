@@ -50,15 +50,15 @@ public class EntityFactory {
     }
 
     public static GameObject makeItem(ItemType nItem, int x, int y){
-        System.out.println(nItem);
         GameObject item = new GameObject(nItem.name());
         item.addComponent(new Transform(x, y));
         item.addComponent(new ItemComponent(nItem));
         item.addComponent(new SpriteComponent(nItem.texturePath));
 
         item.addComponent(new RigidBody());
-        item.addComponent(new Collider(32, 32));
-
+        item.addComponent(new Collider(24, 24));
+        Collider collider = item.getComponent(Collider.class);
+        collider.setSolid(false);
         return item;
 
     }

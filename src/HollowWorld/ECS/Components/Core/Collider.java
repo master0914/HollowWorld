@@ -21,4 +21,12 @@ public class Collider extends Component {
         BOX,
         CIRCLE;
     }
+
+    public void setSolid(boolean solid){
+        isSolid = solid;
+    }
+
+    public boolean getSolid(){
+        return isSolid;
+    }
 }
