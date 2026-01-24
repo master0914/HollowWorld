@@ -5,9 +5,11 @@ import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
 import HollowWorld.ECS.Components.Player.PlatformerMovement;
 import HollowWorld.ECS.Components.Player.PlayerInput;
+import HollowWorld.ECS.Components.Terraria.DamageComponent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.Components.Terraria.ItemComponent;
 import HollowWorld.ECS.Components.Terraria.ItemType;
+import HollowWorld.ECS.Components.Terraria.HealthComponent;
 
 public class EntityFactory {
     public static GameObject makePlayer() {
@@ -46,6 +48,8 @@ public class EntityFactory {
         // physics
         chest.addComponent(new RigidBody());
         chest.addComponent(new Collider(32, 32));
+        chest.addComponent(new HealthComponent(100));//vorübergehend zum Testen von Health und Attack, bis Gegner genutzt werden kann
+        chest.addComponent(new DamageComponent(1));//vorrübergehend zum Testen von Health und Attack, bis Gegner genutzt werden kann
         return chest;
     }
 
@@ -68,6 +72,8 @@ public class EntityFactory {
         hit.addComponent(new Transform (84, 145));
         hit.addComponent(new SpriteComponent("/hitrangePlayer.png"));//vorrübergehende hitrange für den Spieler(zur Visualizierung) außerdem sollte Z. 63 auscodiert werden, da die hitrange nur zum Testen der Fuktionen sichtbar sein sollte.
         hit.addComponent(new Collider(64,80));//vorrübergehend, Größe muss noch auf den Spieler angepasst werden
+        hit.addComponent(new HealthComponent(100));//Annahme 100 als Höchstwert für Health, kann noch angepasst werden
+        hit.addComponent(new DamageComponent(2));//Annahme 1 als Wert für Damage, kann noch angepasst werden
         return hit;
     }
 
