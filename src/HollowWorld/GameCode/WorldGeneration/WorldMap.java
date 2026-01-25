@@ -70,6 +70,14 @@ public class WorldMap {
                         type = BlockType.AIR;
                     }
                 }
+                blocks[10][6] = BlockType.PLANKS;
+                blocks[10][5] = BlockType.PLANKS;
+                blocks[10][4] = BlockType.PLANKS;
+                blocks[11][6] = BlockType.PLANKS;
+                blocks[11][4] = BlockType.PLANKS;
+                blocks[12][6] = BlockType.PLANKS;
+                blocks[12][5] = BlockType.PLANKS;
+                blocks[12][4] = BlockType.PLANKS;
 
                 blocks[x][y] = type;
             }
@@ -87,6 +95,10 @@ public class WorldMap {
     }
     public BlockType[][] getBlocks(){
         return blocks;
+    }
+
+    public BlockType getBlock(int x, int y){
+        return blocks[x][y];
     }
 
     public int getHeight() {
