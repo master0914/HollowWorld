@@ -35,7 +35,7 @@ public class ItemSpawnSystem extends GameSystem {
         // MousePressedEvent auswerten
         if (input.isMouseLeftJustPressed()) {
 
-            gameObjects.add(makeItem(ItemType.DIRT, player.getTransform().x, 100));
+            gameObjects.add(makeItem(ItemType.PLANKS, player.getTransform().x, 100));
 
 
         }
