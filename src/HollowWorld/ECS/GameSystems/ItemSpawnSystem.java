@@ -35,15 +35,18 @@ public class ItemSpawnSystem extends GameSystem {
         // MousePressedEvent auswerten
         if (input.isMouseLeftJustPressed()) {
             Random rand = new Random();
-            int randomNumber = rand.nextInt(3);
+            int randomNumber = rand.nextInt(4);
             if(randomNumber == 0){
                 gameObjects.add(makeItem(ItemType.PLANKS, player.getTransform().x, player.getTransform().y - 200));
             }
             else if (randomNumber == 1) {
                 gameObjects.add(makeItem(ItemType.STONE, player.getTransform().x, player.getTransform().y - 200));
             }
-            else{
+            else if(randomNumber == 2){
                 gameObjects.add(makeItem(ItemType.DIRT, player.getTransform().x, player.getTransform().y - 200));
+            }
+            else{
+                gameObjects.add(makeItem(ItemType.COAL, player.getTransform().x, player.getTransform().y - 200));
             }
 
 

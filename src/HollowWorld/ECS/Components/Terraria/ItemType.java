@@ -5,7 +5,8 @@ import Engine.gfx.Image;
 public enum ItemType {
     DIRT(001f,"Einfacher Baustoff","/Items/DirtItem.png"),
     STONE(002f,"Grundbestandteil der Welt","/Items/StoneItem.png"),
-    PLANKS(003f,"Planks","/Items/PlanksItem.png");
+    PLANKS(003f,"Planks","/Items/PlanksItem.png"),
+    COAL(004f,"Coal","/Items/CoalItem.png");
 
 
     public final float id;

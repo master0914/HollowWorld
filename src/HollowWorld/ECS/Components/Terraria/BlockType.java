@@ -5,8 +5,10 @@ import Engine.gfx.Image;
 public enum BlockType {
     DIRT(1.0f,ItemType.DIRT, "/Blocks/DirtBlock2.png", true),
     STONE(3.0f,ItemType.STONE, "/Blocks/StoneBlock.png", true),
-    AIR(0.0f,null,null, false),
-    PLANKS(2.0f,ItemType.PLANKS,"/Blocks/Planks.png",true);
+    PLANKS(2.0f,ItemType.PLANKS,"/Blocks/Planks.png",true),
+    COAL_ORE(4.0f,ItemType.COAL,"/Blocks/CoalOre.png",true),
+    AIR(0.0f,null,null, false);
+
 
     public final float hardness;
     public final ItemType dropItem;
