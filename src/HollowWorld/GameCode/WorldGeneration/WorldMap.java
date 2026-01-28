@@ -73,6 +73,7 @@ public class WorldMap {
                 blocks[10][6] = BlockType.PLANKS;
                 blocks[10][5] = BlockType.PLANKS;
                 blocks[10][4] = BlockType.PLANKS;
+                blocks[9][5] = BlockType.PLANKS;
                 blocks[11][6] = BlockType.PLANKS;
                 blocks[11][4] = BlockType.PLANKS;
                 blocks[12][6] = BlockType.PLANKS;

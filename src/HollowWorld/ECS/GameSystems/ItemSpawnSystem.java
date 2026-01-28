@@ -1,15 +1,13 @@
 package HollowWorld.ECS.GameSystems;
 
 import Engine.Core.GameContainer;
-import HollowWorld.ECS.Components.Terraria.BlockType;
 import HollowWorld.ECS.Components.Terraria.ItemType;
-//import HollowWorld.ECS.Events.MousePressedEvent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.Components.Player.PlayerInput;
-import HollowWorld.GameCode.EventManager;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
+import java.util.Random;
 
 
 import static HollowWorld.GameCode.EntityFactory.makeHit;
@@ -19,7 +17,9 @@ public class ItemSpawnSystem extends GameSystem {
 
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+
+    }
 
 
     @Override
@@ -34,8 +34,17 @@ public class ItemSpawnSystem extends GameSystem {
 
         // MousePressedEvent auswerten
         if (input.isMouseLeftJustPressed()) {
-
-            gameObjects.add(makeItem(ItemType.PLANKS, player.getTransform().x, 100));
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(3);
+            if(randomNumber == 0){
+                gameObjects.add(makeItem(ItemType.PLANKS, player.getTransform().x, player.getTransform().y - 200));
+            }
+            else if (randomNumber == 1) {
+                gameObjects.add(makeItem(ItemType.STONE, player.getTransform().x, player.getTransform().y - 200));
+            }
+            else{
+                gameObjects.add(makeItem(ItemType.DIRT, player.getTransform().x, player.getTransform().y - 200));
+            }
 
 
         }
