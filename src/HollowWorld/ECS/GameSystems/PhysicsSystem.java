@@ -5,6 +5,8 @@ import Engine.Logger;
 import HollowWorld.ECS.Components.Core.Collider;
 import HollowWorld.ECS.Components.Core.RigidBody;
 import HollowWorld.ECS.Components.Core.Transform;
+import HollowWorld.ECS.Components.Terraria.ItemComponent;
+import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
@@ -136,7 +138,12 @@ public class PhysicsSystem extends GameSystem{
     }
 
     private void handleCollision(GameObject a, GameObject b) {
-        // Hie kommt dann code wie das trowen von events rein.
+
+        // items aufsammeln
+        if(b.hasComponent(ItemComponent.class) && (a.getTag().equals("Player"))){
+            System.out.println("+1 " + b.getName());
+            b.setActive(false); // Item in Welt löschen
+        }
     }
 
     private boolean doesCollide(GameObject A, GameObject B){
