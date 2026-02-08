@@ -2,6 +2,7 @@ package HollowWorld.GameCode;
 
 import HollowWorld.ECS.AbstractBoilerPlateGame;
 import HollowWorld.ECS.Components.Terraria.ItemType;
+import HollowWorld.ECS.Events.DropItemBlock;
 import HollowWorld.ECS.Events.MousePressedEvent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.GameSystems.*;
@@ -30,6 +31,9 @@ public class MainGame extends AbstractBoilerPlateGame {
         addSystem(new HitSystem());
         addSystem(new ItemSpawnSystem());
 
+        EventManager.addEvent(new DropItemBlock(ItemType.DIRT,1,200,100));
+        EventManager.addEvent(new DropItemBlock(ItemType.DIRT,10,400,100));
+
 
 
         setWorldMap(new WorldMap(SCREENWIDTH / 32, SCREENHEIGHT / 32));
@@ -37,8 +41,6 @@ public class MainGame extends AbstractBoilerPlateGame {
         GameObject player = makePlayer();
         addGameObject(player);
         addGameObject(makeChest());
-        addGameObject(makeItem(ItemType.DIRT,200,100));
-        addGameObject(makeItem(ItemType.STONE,400,100));
 
 
 

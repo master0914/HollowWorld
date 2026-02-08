@@ -2,15 +2,14 @@ package HollowWorld.ECS.GameSystems;
 
 import Engine.Core.GameContainer;
 import HollowWorld.ECS.Components.Terraria.ItemType;
+import HollowWorld.ECS.Events.DropItemBlock;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.Components.Player.PlayerInput;
+import HollowWorld.GameCode.EventManager;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
-import java.util.Random;
 
-
-import static HollowWorld.GameCode.EntityFactory.makeHit;
 import static HollowWorld.GameCode.EntityFactory.makeItem;
 
 public class ItemSpawnSystem extends GameSystem {
@@ -32,27 +31,19 @@ public class ItemSpawnSystem extends GameSystem {
         PlayerInput input = player.getComponent(PlayerInput.class);
 
 
-        // MousePressedEvent auswerten
-        if (input.isMouseLeftJustPressed()) {
-            Random rand = new Random();
-            int randomNumber = rand.nextInt(4);
-            if(randomNumber == 0){
-                gameObjects.add(makeItem(ItemType.PLANKS, player.getTransform().x, player.getTransform().y - 200));
-            }
-            else if (randomNumber == 1) {
-                gameObjects.add(makeItem(ItemType.STONE, player.getTransform().x, player.getTransform().y - 200));
-            }
-            else if(randomNumber == 2){
-                gameObjects.add(makeItem(ItemType.DIRT, player.getTransform().x, player.getTransform().y - 200));
-            }
-            else{
-                gameObjects.add(makeItem(ItemType.COAL, player.getTransform().x, player.getTransform().y - 200));
-            }
+        if (!EventManager.getEvents(DropItemBlock.class).isEmpty()){
+
+            for(int i = 0; i < EventManager.getEvents(DropItemBlock.class).size(); i++){
+                DropItemBlock itemDrop = EventManager.getEvents(DropItemBlock.class).remove(i); // Event aus Liste entfernen und speichern
+
+                for(int j = 0; j < itemDrop.getCount(); j++){ // für jeden count ein item spawnen
+                    gameObjects.add(makeItem(itemDrop.getItem(),itemDrop.getX(), itemDrop.getY())); // item spawnen
+                    System.out.println("Item erzeugt");
+                }
 
 
+            }
         }
-
-
     }
 }
 
