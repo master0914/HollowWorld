@@ -1,6 +1,8 @@
 package HollowWorld.GameCode;
 
+import Engine.Math.IVector;
 import HollowWorld.ECS.AbstractBoilerPlateGame;
+import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.Events.DropItemBlock;
 import HollowWorld.ECS.Events.MousePressedEvent;
@@ -51,14 +53,20 @@ public class MainGame extends AbstractBoilerPlateGame {
 
     @Override
     public void update(GameContainer gc, float dt) {//überprüft, ob die linke Maustaste gedrückt wurde und löst MousePressedEvent aus
-        if (gc.getInput().isButtonDown(MouseEvent.BUTTON1)) {
-            EventManager.addEvent(
-                    new MousePressedEvent(
-                            gc.getInput().getMouseX(),
-                            gc.getInput().getMouseY(),
-                            MouseEvent.BUTTON1
-                    )
-            );
+//        if (gc.getInput().isButtonDown(MouseEvent.BUTTON1)) {
+//            EventManager.addEvent(
+//                    new MousePressedEvent(
+//                            gc.getInput().getMouseX(),
+//                            gc.getInput().getMouseY(),
+//                            MouseEvent.BUTTON1
+//                    )
+//            );
+//        }
+        PlayerInput input = findGameObjectByName("Player").getComponent(PlayerInput.class);
+        if(input.isMouseLeftJustPressed()){
+            System.out.println("Player clicked at: ( " + input.getMouseX() + ", " + input.getMouseY() + ")");
+            IVector blockpos = GameData.screenXYtoBlockXY(input.getMouseX(), input.getMouseY());
+            System.out.println("Player clicked at: ( " + blockpos.x + ", " + blockpos.y + ")");
         }
         super.update(gc, dt);
     }

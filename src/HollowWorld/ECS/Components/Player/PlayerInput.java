@@ -26,8 +26,8 @@ public class PlayerInput extends Component {
         mouseX = gc.getInput().getMouseX();
         mouseY = gc.getInput().getMouseY();
         //Logger.info("PlayerInputs: l:" + left + "; r:" + right + "; jump:" + jump);
-        Logger.info("PlayerMouseInputs: x: " + mouseX + ",  y: " + mouseY + ", mouseLeftDown: "
-        + mouseLeft + ",  mouseLeftJustDown: " + mouseLeftJustPressed);
+//        Logger.info("PlayerMouseInputs: x: " + mouseX + ",  y: " + mouseY + ", mouseLeftDown: "
+//        + mouseLeft + ",  mouseLeftJustDown: " + mouseLeftJustPressed);
 
     }
 
