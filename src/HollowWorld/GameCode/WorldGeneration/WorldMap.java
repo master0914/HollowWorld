@@ -113,5 +113,10 @@ public class WorldMap {
     public int getWidth() {
         return width;
     }
+    public  void removeBlock(int gridX, int gridY){
+        if (blocks[gridX][gridY] != BlockType.AIR) {
+        blocks[gridX][gridY] = BlockType.AIR;
+        }
+    }
 
 }

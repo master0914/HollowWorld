@@ -69,5 +69,6 @@ public class MainGame extends AbstractBoilerPlateGame {
             System.out.println("Player clicked at: ( " + blockpos.x + ", " + blockpos.y + ")");
         }
         super.update(gc, dt);
+
     }
 }

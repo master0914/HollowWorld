@@ -53,6 +53,7 @@ public class MiningSystem extends GameSystem {
             EventManager.addEvent(new DropItemBlock(p.dropItem, 1,input.getMouseX(), input.getMouseY()));
             worldMap.removeBlock(blockpos.x, blockpos.y);
 
+
         }
 
 
