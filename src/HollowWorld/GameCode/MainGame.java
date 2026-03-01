@@ -70,5 +70,6 @@ public class MainGame extends AbstractBoilerPlateGame {
         }
         super.update(gc, dt);
 
+
     }
 }
