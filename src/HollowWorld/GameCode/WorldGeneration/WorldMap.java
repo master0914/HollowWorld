@@ -114,9 +114,4 @@ public class WorldMap {
         return width;
     }
 
-    public void removeBlock(int gridX, int gridY){      //soll einen Block bei angegebenen Koordinatem "löschen"
-        if(blocks[gridX][gridY] != BlockType.AIR){      //Fehler bei Type ?
-        blocks[gridX][gridY] = BlockType.AIR;
-        }
-    }
 }
