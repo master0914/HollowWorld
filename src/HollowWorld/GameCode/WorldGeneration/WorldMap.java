@@ -1,12 +1,12 @@
 package HollowWorld.GameCode.WorldGeneration;
 import HollowWorld.ECS.Components.Terraria.BlockType;
-
+import static java.lang.Math.random;
 
 public class WorldMap {
+
     private final BlockType[][] blocks;
     private final int width;
     private final int height;
-    // private int tileSize;
 
     public WorldMap(int width, int height){
         this.width = width;
@@ -15,103 +15,161 @@ public class WorldMap {
         generateTerrain();
     }
 
-    public BlockType getBlockType(float noiseValue) {
-        if (noiseValue < -0.4f) {
-            return BlockType.DIRT;
-        } else if (noiseValue < -0.2f) {
-            return BlockType.STONE;
-        } else {
-            return BlockType.AIR;
+    // Implementierung von der Cellular Automata Section
+    // für nähere infos
+    // https://code.tutsplus.com/generate-random-cave-levels-using-cellular-automata--gamedev-9664t
+    // chatgpt hat geholfen den algo richtig zu implementieren
+    // (ich hatte echt keine lust, mich lange damit auseinanderzusetzen)
+
+    public int countAliveNeighbours(boolean[][] map, int x, int y){
+        int count = 0;
+
+        for(int i = -1; i < 2; i++){
+            for(int j = -1; j < 2; j++){
+
+                int neighbour_x = x + i;
+                int neighbour_y = y + j;
+
+                if(i == 0 && j == 0){
+                    continue;
+                }
+                else if(neighbour_x < 0 || neighbour_y < 0 ||
+                        neighbour_x >= map.length ||
+                        neighbour_y >= map[0].length){
+                    count++;
+                }
+                else if(map[neighbour_x][neighbour_y]){
+                    count++;
+                }
+            }
         }
+        return count;
     }
+
+    public boolean[][] doSimulationStep(boolean[][] oldMap){
+        boolean[][] newMap = new boolean[oldMap.length][oldMap[0].length];
+
+        for(int x = 0; x < oldMap.length; x++){
+            for(int y = 0; y < oldMap[0].length; y++){
+
+                int nbs = countAliveNeighbours(oldMap, x, y);
+
+                if(oldMap[x][y]){
+                    int deathLimit = 4;
+                    newMap[x][y] = nbs >= deathLimit;
+                } else {
+                    int birthLimit = 4;
+                    newMap[x][y] = nbs > birthLimit;
+                }
+            }
+        }
+        return newMap;
+    }
+
+    public boolean[][] initialiseMap(boolean[][] map){
+        for(int x = 0; x < map.length; x++){
+            for(int y = 0; y < map[0].length; y++){
+                // Cellular automata settings
+                float chanceToStartAlive = 0.45f;
+                map[x][y] = random() < chanceToStartAlive;
+            }
+        }
+        return map;
+    }
+
+    public boolean[][] generateCaveMap(int caveHeight){
+        boolean[][] cellmap = new boolean[width][caveHeight];
+
+        cellmap = initialiseMap(cellmap);
+
+        int numberOfSteps = 4;
+        for(int i = 0; i < numberOfSteps; i++){
+            cellmap = doSimulationStep(cellmap);
+        }
+
+        return cellmap;
+    }
+
+    // hier werden dann sozusagen die blöcke platziert
+
     private void generateTerrain() {
-        // noise setup for 1d noise, also die oberste linie
+
+        // 1D surface noise
         FastNoiseLite surfaceNoise = new FastNoiseLite();
         surfaceNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         surfaceNoise.SetSeed(1337);
         surfaceNoise.SetFrequency(0.02f);
 
-        // noise setup for 2d noise, also alles unter 1d noise linie
-        FastNoiseLite caveNoise = new FastNoiseLite();
-        caveNoise.SetNoiseType(FastNoiseLite.NoiseType.Value);
-        caveNoise.SetSeed(420);
-        caveNoise.SetFrequency(0.08f);
-
-        // chatgpt hat die brechnungen gemacht
         int middleY = height / 2;
+        int surfaceHeightVariance = 6;
+
+        // höhe unter der höhlen generieren
+        int caveStartY = height / 3;
+        int caveHeight = height - caveStartY;
+
+        boolean[][] cellmap = generateCaveMap(caveHeight);
 
         for (int x = 0; x < width; x++) {
-            float surfaceNoiseValue = surfaceNoise.GetNoise(x, 0);
 
-            // chatgpt hat die brechnungen gemacht
-            int surfaceHeightVariance = 5; // ich glaube wie hoch berge werden können bzw der unterschied zum standard level
-            int surfaceY = middleY + (int) (surfaceNoiseValue * surfaceHeightVariance);
+            float surfaceNoiseValue = surfaceNoise.GetNoise(x, 0);
+            int surfaceY = middleY + (int)(surfaceNoiseValue * surfaceHeightVariance);
 
             for (int y = 0; y < height; y++) {
-                BlockType type = BlockType.AIR;
 
+                BlockType type;
 
-                if (y < surfaceY){
+                // himmel
+                if (y < surfaceY) {
                     type = BlockType.AIR;
-                } else if (y == surfaceY) {
+                }
+                // oberste linie
+                else if (y == surfaceY) {
                     type = BlockType.DIRT;
-                } else {
+                }
+                // dickere obere linie
+                else if (y <= surfaceY + 3) {
+                    type = BlockType.DIRT;
+                }
+                // höhlen
+                else {
+                    // hoch bis tiefpunkt der höhlen
+                    int caveY = y - caveStartY;
 
-                    // untergrund
-                    if (y < surfaceY + 5) {
-                        type = BlockType.DIRT;
+                    if (caveY >= 0 && caveY < cellmap[0].length) {
+                        if (cellmap[x][caveY]) {
+                            type = BlockType.STONE;
+                        } else {
+                            type = BlockType.AIR;
+                        }
                     } else {
                         type = BlockType.STONE;
                     }
-
-                    float caveNoiseValue = caveNoise.GetNoise(x, y);
-                    // höhlen dichte
-                    if (caveNoiseValue > 0.1f) {
-                        type = BlockType.AIR;
-                    }
                 }
-                blocks[10][6] = BlockType.PLANKS;
-                blocks[10][5] = BlockType.PLANKS;
-                blocks[10][4] = BlockType.PLANKS;
-                blocks[9][5] = BlockType.PLANKS;
-                blocks[11][6] = BlockType.PLANKS;
-                blocks[11][4] = BlockType.PLANKS;
-                blocks[12][6] = BlockType.PLANKS;
-                blocks[12][5] = BlockType.PLANKS;
-                blocks[12][4] = BlockType.PLANKS;
-
-                blocks[12][15] = BlockType.COAL_ORE;
-                blocks[13][15] = BlockType.COAL_ORE;
-                blocks[14][15] = BlockType.COAL_ORE;
 
                 blocks[x][y] = type;
             }
         }
     }
+
+
+
     public boolean isSolid(int gridX, int gridY){
         return blocks[gridX][gridY].isSolid;
     }
 
-
-    public void placeBlock(int gridX, int gridY, BlockType type) {
-        if (type == BlockType.AIR) {
-            blocks[gridX][gridY] = type;
-        }
+    public void placeBlock(int gridX, int gridY, BlockType type){
+        blocks[gridX][gridY] = type;
     }
+
     public BlockType[][] getBlocks(){
         return blocks;
     }
 
-    public BlockType getBlock(int x, int y){
-        return blocks[x][y];
-    }
-
-    public int getHeight() {
+    public int getHeight(){
         return height;
     }
 
-    public int getWidth() {
+    public int getWidth(){
         return width;
     }
-
 }
