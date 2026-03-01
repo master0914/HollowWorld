@@ -32,7 +32,7 @@ public class MainGame extends AbstractBoilerPlateGame {
         addSystem(new ActivateOnMouseClickSystem());
         addSystem(new HitSystem());
         addSystem(new ItemSpawnSystem());
-
+        addSystem(new MiningSystem());
         EventManager.addEvent(new DropItemBlock(ItemType.DIRT,1,200,100));
         EventManager.addEvent(new DropItemBlock(ItemType.DIRT,10,400,100));
 
