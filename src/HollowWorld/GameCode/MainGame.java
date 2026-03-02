@@ -29,12 +29,15 @@ public class MainGame extends AbstractBoilerPlateGame {
         addSystem(new PhysicsSystem());
         addSystem(new MovementSystem());
         addSystem(new AnimationSystem());
+        addSystem(new MiningSystem());
         addSystem(new ActivateOnMouseClickSystem());
         addSystem(new HitSystem());
         addSystem(new ItemSpawnSystem());
-        addSystem(new MiningSystem());
+
+
+
         EventManager.addEvent(new DropItemBlock(ItemType.DIRT,1,200,100));
-        EventManager.addEvent(new DropItemBlock(ItemType.DIRT,10,400,100));
+        EventManager.addEvent(new DropItemBlock(ItemType.DIRT,3,400,100));
 
 
 
@@ -69,7 +72,6 @@ public class MainGame extends AbstractBoilerPlateGame {
             System.out.println("Player clicked at: ( " + blockpos.x + ", " + blockpos.y + ")");
         }
         super.update(gc, dt);
-
 
     }
 }

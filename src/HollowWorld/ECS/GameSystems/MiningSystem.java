@@ -1,28 +1,49 @@
 package HollowWorld.ECS.GameSystems;
 
 import Engine.Core.GameContainer;
-//import HollowWorld.ECS.Events.MousePressedEvent;
 import Engine.Math.IVector;
 import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.ECS.Components.Terraria.BlockType;
+import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.EventManager;
 import HollowWorld.GameCode.GameData;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
+
+import Engine.Core.GameContainer;
+import HollowWorld.ECS.Events.MousePressedEvent;
+import HollowWorld.ECS.Components.Player.PlayerInput;
+import HollowWorld.ECS.Components.Terraria.BlockType;
+import HollowWorld.ECS.Components.Terraria.ItemType;
+import HollowWorld.ECS.Events.DropItemBlock;
+import HollowWorld.ECS.Events.MousePressedEvent;
+import HollowWorld.ECS.GameObjects.GameObject;
+import HollowWorld.GameCode.EventManager;
+import HollowWorld.ECS.GameSystems.RenderSystem;
+import HollowWorld.GameCode.WorldGeneration.WorldMap;
+
+import javax.swing.plaf.basic.BasicTreeUI;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
+import java.util.List;
+
+
 import java.util.List;
 
 import HollowWorld.ECS.Events.DropItemBlock;
 
-import static HollowWorld.GameCode.EntityFactory.makeHit;
 
 
 public class MiningSystem extends GameSystem {
 
-    private float hitLifetime = 0f;
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+
+    }
 
     @Override
     public void cleanup() {}
@@ -37,23 +58,18 @@ public class MiningSystem extends GameSystem {
         GameObject player = findPlayer(gameObjects);
         PlayerInput input = player.getComponent(PlayerInput.class);
 
-        GameObject hit = null;
-        if(hasObjectsByName("Hit",gameObjects)) {
-            hit = getObjectsByName("Hit", gameObjects);
-        }
+
 
         // MousePressedEvent auswerten
         if(input.isMouseLeftJustPressed()) {
 
-
             IVector blockpos = GameData.screenXYtoBlockXY(input.getMouseX(), input.getMouseY());
-            System.out.println("Servus test");
-            //worldMap.getBlock(blockpos.x, blockpos.y);
             BlockType p =  worldMap.getBlock(blockpos.x, blockpos.y);
-            EventManager.addEvent(new DropItemBlock(p.dropItem, 1,input.getMouseX(), input.getMouseY()));
-            worldMap.removeBlock(blockpos.x, blockpos.y);
 
-
+            if(p != BlockType.AIR) {
+                EventManager.addEvent(new DropItemBlock(p.dropItem, 1, input.getMouseX(), input.getMouseY()));
+                worldMap.removeBlock(blockpos.x, blockpos.y);
+            }
         }
 
 

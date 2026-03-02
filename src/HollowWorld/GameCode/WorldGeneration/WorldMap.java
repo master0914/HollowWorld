@@ -117,7 +117,6 @@ public class WorldMap {
         if (blocks[gridX][gridY] != BlockType.AIR) {
         blocks[gridX][gridY] = BlockType.AIR;
         }
-
     }
 
 }
