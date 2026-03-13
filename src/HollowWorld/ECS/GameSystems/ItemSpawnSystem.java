@@ -6,6 +6,7 @@ import HollowWorld.ECS.Events.DropItemBlock;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.GameCode.EventManager;
+import HollowWorld.GameCode.GameData;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
 import java.util.List;
@@ -30,16 +31,20 @@ public class ItemSpawnSystem extends GameSystem {
         GameObject player = findPlayer(gameObjects);
         PlayerInput input = player.getComponent(PlayerInput.class);
 
-
+        //System.out.println(EventManager.getEvents(DropItemBlock.class).isEmpty());
         if (!EventManager.getEvents(DropItemBlock.class).isEmpty()){
-
             for(int i = 0; i < EventManager.getEvents(DropItemBlock.class).size(); i++){
                 DropItemBlock itemDrop = EventManager.getEvents(DropItemBlock.class).remove(i); // Event aus Liste entfernen und speichern
 
                 for(int j = 0; j < itemDrop.getCount(); j++){ // für jeden count ein item spawnen
-                    gameObjects.add(makeItem(itemDrop.getItem(),itemDrop.getX(), itemDrop.getY())); // item spawnen
+
+                    int xItem = GameData.screenXYtoWorldXY(itemDrop.getX(), itemDrop.getY()).x;
+                    int yItem = GameData.screenXYtoWorldXY(itemDrop.getX(), itemDrop.getY()).y;
+
+                    gameObjects.add(makeItem(itemDrop.getItem(),xItem, yItem)); // item spawnen
                     System.out.println("Item erzeugt");
                 }
+
 
 
             }
