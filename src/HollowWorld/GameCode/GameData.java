@@ -18,5 +18,14 @@ public class GameData {
 
         return new IVector(blockX, blockY);
     }
-
+    public static IVector screenXYtoWorldXY(int screenX, int screenY){
+        int worldX = (int)cameraPosition.x + (screenX);
+        int worldY = (int)cameraPosition.y + (screenY);
+        return new IVector(worldX,worldY);
+    }
+    public static IVector worldXYtoScreenXY(int worldX, int worldY){
+        int screenX = (worldX) - (int)cameraPosition.x;
+        int screenY = (worldY) - (int)cameraPosition.y;
+        return new IVector(screenX,screenY);
+    }
 }
