@@ -5,11 +5,8 @@ import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
 import HollowWorld.ECS.Components.Player.PlatformerMovement;
 import HollowWorld.ECS.Components.Player.PlayerInput;
-import HollowWorld.ECS.Components.Terraria.DamageComponent;
+import HollowWorld.ECS.Components.Terraria.*;
 import HollowWorld.ECS.GameObjects.GameObject;
-import HollowWorld.ECS.Components.Terraria.ItemComponent;
-import HollowWorld.ECS.Components.Terraria.ItemType;
-import HollowWorld.ECS.Components.Terraria.HealthComponent;
 
 public class EntityFactory {
     public static GameObject makePlayer() {
@@ -40,6 +37,7 @@ public class EntityFactory {
         player.addComponent(new CameraFollow());
         player.addComponent(new HealthComponent(100));//variabel
         player.addComponent(new DamageComponent(1));//variabel
+        player.addComponent(new InventoryComponent(32));
         return player;
     }
 
