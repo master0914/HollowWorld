@@ -16,6 +16,7 @@ public class InventoryComponent extends Component {
             if(inventory[i] == item){
                 gleichesItem = true;
 
+
             }
         }
         if (zaehler < inventory.length){

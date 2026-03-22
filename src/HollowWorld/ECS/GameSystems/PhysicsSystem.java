@@ -163,6 +163,7 @@ public class PhysicsSystem extends GameSystem{
             int hbb = hb.HealthComponentWertGeben();
             hb.DamageVonHealthAbziehen(daa);
             //System.out.println("Health enemy : "+hbb);
+
         }
 
     }

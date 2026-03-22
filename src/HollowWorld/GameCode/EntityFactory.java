@@ -38,6 +38,7 @@ public class EntityFactory {
         player.addComponent(new HealthComponent(100));//variabel
         player.addComponent(new DamageComponent(1));//variabel
         player.addComponent(new InventoryComponent(32));
+
         return player;
     }
 
