@@ -10,7 +10,13 @@ import HollowWorld.GameCode.EntityFactory;
 
 
 public class ItemComponent extends Component {
-    public ItemComponent(ItemType nItem){
+    ItemType item;
 
+    public ItemComponent(ItemType nItem){
+        item = nItem;
+    }
+
+    public ItemType getItem(){
+        return item;
     }
 }
