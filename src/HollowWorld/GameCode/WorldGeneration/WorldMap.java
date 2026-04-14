@@ -80,6 +80,11 @@ public class WorldMap {
                 blocks[12][5] = BlockType.PLANKS;
                 blocks[12][4] = BlockType.PLANKS;
 
+                blocks[20][4] = BlockType.LOG;
+                blocks[20][5] = BlockType.LOG;
+                blocks[20][6] = BlockType.LOG;
+                blocks[20][7] = BlockType.LOG;
+
                 blocks[12][15] = BlockType.COAL_ORE;
                 blocks[13][15] = BlockType.COAL_ORE;
                 blocks[14][15] = BlockType.COAL_ORE;

@@ -7,6 +7,7 @@ public enum BlockType {
     STONE(3.0f,ItemType.STONE, "/Blocks/StoneBlock.png", true),
     PLANKS(2.0f,ItemType.PLANKS,"/Blocks/Planks.png",true),
     COAL_ORE(4.0f,ItemType.COAL,"/Blocks/CoalOre.png",true),
+    LOG(2.0f, ItemType.PLANKS,"/Blocks/Log.png",true),
     AIR(0.0f,null,null, false);
 
 
