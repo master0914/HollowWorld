@@ -3,6 +3,7 @@ package HollowWorld.ECS.Components.Terraria;
 import Engine.gfx.Image;
 
 public enum ItemType {
+    AIR(000f,"Platzhalter",""),
     DIRT(001f,"Einfacher Baustoff","/Items/DirtItem.png"),
     STONE(002f,"Grundbestandteil der Welt","/Items/StoneItem.png"),
     PLANKS(003f,"Planks","/Items/PlanksItem.png"),

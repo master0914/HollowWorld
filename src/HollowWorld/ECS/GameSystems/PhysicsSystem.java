@@ -5,13 +5,9 @@ import Engine.Logger;
 import HollowWorld.ECS.Components.Core.Collider;
 import HollowWorld.ECS.Components.Core.RigidBody;
 import HollowWorld.ECS.Components.Core.Transform;
-import HollowWorld.ECS.Components.Terraria.DamageComponent;
-import HollowWorld.ECS.Components.Terraria.HealthComponent;
-import HollowWorld.ECS.Components.Terraria.ItemComponent;
-import HollowWorld.ECS.Components.Terraria.ItemType;
+import HollowWorld.ECS.Components.Terraria.*;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
-import HollowWorld.ECS.Components.Terraria.InventoryComponent;
 
 import java.util.List;
 
@@ -144,9 +140,8 @@ public class PhysicsSystem extends GameSystem{
 
         // items aufsammeln
         if(b.hasComponent(ItemComponent.class) && (a.getTag().equals("Player"))){
-            b.setActive(false); // Item in Welt löschen
             a.getComponent(InventoryComponent.class).collectItem(b.getComponent(ItemComponent.class).getItem());
-            a.getComponent(InventoryComponent.class).inventarAusgeben();
+            b.setActive(false); // Item in Welt löschen
         }
         if(b.hasComponent(DamageComponent.class)&&(a.getTag().equals("Player"))){//zieht dem Spieler Schaden ab, wenn Objekt Damagewert hat
             HealthComponent ha = a.getComponent(HealthComponent.class);
@@ -154,7 +149,7 @@ public class PhysicsSystem extends GameSystem{
             DamageComponent hb = b.getComponent(DamageComponent.class);
             int hbb = hb.DamageComponentWertGeben();
             ha.DamageVonHealthAbziehen(hbb);
-            //System.out.println("Health player: "+haa);
+            System.out.println("Health player: "+haa);
         }
         if(b.hasComponent(HealthComponent.class)&&(a.getTag().equals("Player"))){//zieht, wenn der Spieler angreift, falls Healthwert vorhanden, Objekt Schaden hat
             DamageComponent da = a.getComponent(DamageComponent.class);
@@ -162,10 +157,8 @@ public class PhysicsSystem extends GameSystem{
             HealthComponent hb = b.getComponent(HealthComponent.class);
             int hbb = hb.HealthComponentWertGeben();
             hb.DamageVonHealthAbziehen(daa);
-            //System.out.println("Health enemy : "+hbb);
-
+            System.out.println("Health enemy : "+hbb);
         }
-
     }
 
     private boolean doesCollide(GameObject A, GameObject B){
