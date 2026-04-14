@@ -48,7 +48,7 @@ public class InventoryComponent extends Component {
     public void inventarAusgeben(){
         System.out.println();
         for(int i = 0; i < inventory.length; i++){
-            System.out.print(inventory[i].getItem() + " [ " + inventory[i].getCount() + "x] | ");
+            System.out.print(inventory[i].getItem() + " [" + inventory[i].getCount() + "x] | ");
 
         }
     }
