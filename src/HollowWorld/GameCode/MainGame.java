@@ -37,7 +37,10 @@ public class MainGame extends AbstractBoilerPlateGame {
 
 
         EventManager.addEvent(new DropItemBlock(ItemType.DIRT,1,200,100));
-        EventManager.addEvent(new DropItemBlock(ItemType.DIRT,3,400,100));
+        EventManager.addEvent(new DropItemBlock(ItemType.DIRT,30,400,100));
+        EventManager.addEvent(new DropItemBlock(ItemType.STONE,1,500,100));
+        EventManager.addEvent(new DropItemBlock(ItemType.PLANKS,1,600,100));
+        EventManager.addEvent(new DropItemBlock(ItemType.COAL,1,700,100));
 
 
 

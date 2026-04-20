@@ -5,7 +5,9 @@ import Engine.Core.Renderer;
 import Engine.Logger;
 import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
+import HollowWorld.ECS.Components.Player.PlayerInput;
 import HollowWorld.ECS.Components.Terraria.BlockType;
+import HollowWorld.ECS.Components.Terraria.InventoryComponent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
@@ -25,9 +27,13 @@ public class RenderSystem extends GameSystem{
     public void render(GameContainer gc, Renderer renderer, List<GameObject> gameObjects, WorldMap map) {
         //Logger.info(cameraPosition.toString());
         updateCamera(gameObjects);
-        renderObjects(renderer,gameObjects);
-        renderMap(gc,renderer,map);
-        renderCollider(renderer,gameObjects);
+        renderObjects(renderer, gameObjects);
+        renderMap(gc, renderer, map);
+        renderCollider(renderer, gameObjects);
+
+
+        renderPlayerInv(renderer, gameObjects);
+
     }
 
     private void renderCollider(Renderer renderer, List<GameObject> gameObjects) {
@@ -36,6 +42,29 @@ public class RenderSystem extends GameSystem{
             Collider col = obj.getComponent(Collider.class);
             renderer.drawRect((int)(tf.x - cameraPosition.x), (int)(tf.y - cameraPosition.y), col.width,col.height,0xffff0000);
         }
+    }
+
+    private void renderPlayerInv(Renderer renderer,  List<GameObject> gameObjects){
+        GameObject player = findPlayer(gameObjects);
+        InventoryComponent inv = player.getComponent(InventoryComponent.class);
+        PlayerInput input = player.getComponent(PlayerInput.class);
+
+        if(input.isInventory()){
+            renderer.fillRect(150,50,700,400,0xffd0d0d0);
+            for(int i = 0; i < inv.getSlotCount(); i++){
+                if(i<9){
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite,i*70 + 170,70,false,2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i*70 + 170, 70, 0xff000000);
+                } else if (i<18) {
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite,i*70 + 170,170,false,2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i*70 - 460, 170, 0xff000000);
+                }
+
+
+            }
+
+        }
+
     }
 
     private void renderObjects(Renderer renderer, List<GameObject> gameObjects){

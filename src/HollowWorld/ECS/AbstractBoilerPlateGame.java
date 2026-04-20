@@ -42,7 +42,7 @@ public abstract class AbstractBoilerPlateGame extends AbstractGame {
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-        r.drawBackground(0xfff0ff0f);
+        r.drawBackground(0xff62BAE9);
         renderSystem.render(gc,r,gameObjects,worldMap);
         // evtl RenderSystems
     }

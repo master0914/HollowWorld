@@ -14,6 +14,7 @@ public class PlayerInput extends Component {
     private boolean mouseLeftJustPressed; // das wird nur true sein wenn der knopf eben runtergedrückt wird.
     // also nur einmal pro tasten druck true
     private int mouseX, mouseY;
+    private boolean inventory;
 
     @Override
     public void update(GameContainer gc, float dt) {
@@ -26,8 +27,9 @@ public class PlayerInput extends Component {
         mouseX = gc.getInput().getMouseX();
         mouseY = gc.getInput().getMouseY();
         //Logger.info("PlayerInputs: l:" + left + "; r:" + right + "; jump:" + jump);
-//        Logger.info("PlayerMouseInputs: x: " + mouseX + ",  y: " + mouseY + ", mouseLeftDown: "
-//        + mouseLeft + ",  mouseLeftJustDown: " + mouseLeftJustPressed);
+        //Logger.info("PlayerMouseInputs: x: " + mouseX + ",  y: " + mouseY + ", mouseLeftDown: "
+        //+ mouseLeft + ",  mouseLeftJustDown: " + mouseLeftJustPressed);
+        inventory = gc.getInput().isKey(KeyEvent.VK_E);
 
     }
 
@@ -46,6 +48,8 @@ public class PlayerInput extends Component {
     public int getMouseX(){return mouseX;}
 
     public int getMouseY(){return mouseY;}
+
+    public boolean isInventory(){return inventory;}
 }
 
 

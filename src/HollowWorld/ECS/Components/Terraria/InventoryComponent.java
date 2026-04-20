@@ -52,5 +52,13 @@ public class InventoryComponent extends Component {
 
         }
     }
+
+    public int getSlotCount(){
+        return inventory.length;
+    }
+
+    public Slot getSlot(int slot){
+        return inventory[slot];
+    }
 }
 
