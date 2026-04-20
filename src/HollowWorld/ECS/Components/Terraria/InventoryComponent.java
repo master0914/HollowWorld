@@ -8,12 +8,15 @@ import HollowWorld.ECS.Components.Terraria.ItemType;
 
 public class InventoryComponent extends Component {
     public Slot[] inventory;
+    public int selectedSlot;
 
     public InventoryComponent(int slots){
         inventory = new Slot[slots];
         for(int i = 0; i < slots; i++){
             inventory[i] = new Slot();
         }
+        selectedSlot = 0;
+        inventory[0].setSelected(true);
     }
 
 
@@ -27,21 +30,16 @@ public class InventoryComponent extends Component {
             }
         }
 
-        if (!gleichesItem){
+        if (!gleichesItem) {
             boolean leerenSlotGefunden = false;
-            for(int i = 0; (i < inventory.length) && (!leerenSlotGefunden); i++){
-                if(inventory[i].getItem() == ItemType.AIR){
+            for (int i = 0; (i < inventory.length) && (!leerenSlotGefunden); i++) {
+                if (inventory[i].getItem() == ItemType.AIR) {
                     leerenSlotGefunden = true;
                     inventory[i].setItem(item);
                     inventory[i].setCount(1);
-
                 }
             }
-
-
         }
-        inventarAusgeben();
-
     }
 
 
@@ -59,6 +57,17 @@ public class InventoryComponent extends Component {
 
     public Slot getSlot(int slot){
         return inventory[slot];
+    }
+
+    public void scrollSelected(){
+        inventory[selectedSlot].setSelected(false);
+        if(selectedSlot < 8){
+            selectedSlot++;
+        }
+        else{
+            selectedSlot = 0;
+        }
+        inventory[selectedSlot].setSelected(true);
     }
 }
 

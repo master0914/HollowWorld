@@ -32,7 +32,7 @@ public class RenderSystem extends GameSystem{
         renderCollider(renderer, gameObjects);
 
 
-        renderPlayerInv(renderer, gameObjects);
+        renderPlayerInv(renderer, gameObjects, gc);
 
     }
 
@@ -44,27 +44,49 @@ public class RenderSystem extends GameSystem{
         }
     }
 
-    private void renderPlayerInv(Renderer renderer,  List<GameObject> gameObjects){
+    private void renderPlayerInv(Renderer renderer,  List<GameObject> gameObjects, GameContainer gc) {
         GameObject player = findPlayer(gameObjects);
         InventoryComponent inv = player.getComponent(InventoryComponent.class);
         PlayerInput input = player.getComponent(PlayerInput.class);
 
-        if(input.isInventory()){
-            renderer.fillRect(150,50,700,400,0xffd0d0d0);
-            for(int i = 0; i < inv.getSlotCount(); i++){
-                if(i<9){
-                    renderer.drawImage(inv.getSlot(i).getItem().sprite,i*70 + 170,70,false,2);
-                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i*70 + 170, 70, 0xff000000);
-                } else if (i<18) {
-                    renderer.drawImage(inv.getSlot(i).getItem().sprite,i*70 + 170,170,false,2);
-                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i*70 - 460, 170, 0xff000000);
+        if (input.isInventory()) {
+            renderer.fillRect(150, 50, 700, 400, 0xffd0d0d0);
+            renderer.drawRect(150, 50, 700, 400, 0xff000000);
+            for (int i = 0; i < inv.getSlotCount(); i++) {
+                if (i < 9) {
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 70, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 + 170, 120, 0xff000000);
+                } else if (i < 18) {
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 170, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 - 460, 190, 0xff000000);
+                }else if (i < 27) {
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 170, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 - 1090, 260, 0xff000000);
                 }
 
 
             }
 
-        }
+        } else {
 
+            if(gc.getInput().getScroll() > 0){
+                inv.scrollSelected();
+            }
+
+            renderer.fillRect(150, 400, 700, 80, 0xffd0d0d0);
+            renderer.drawRect(150, 400, 700, 80, 0xff000000);
+
+            for (int i = 0; i < 8; i++) {
+                renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 416, false, 2);
+                renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 + 170, 466, 0xff000000);
+
+                if(inv.getSlot(i).getSelected()){
+                    renderer.drawRect(i * 70 + 161,410, 65,65,0xff000000);
+                }
+            }
+
+
+        }
     }
 
     private void renderObjects(Renderer renderer, List<GameObject> gameObjects){
