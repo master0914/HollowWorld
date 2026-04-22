@@ -3,6 +3,7 @@ package HollowWorld.GameCode;
 import Engine.Math.IVector;
 import HollowWorld.ECS.AbstractBoilerPlateGame;
 import HollowWorld.ECS.Components.Player.PlayerInput;
+import HollowWorld.ECS.Components.Terraria.InventoryComponent;
 import HollowWorld.ECS.Components.Terraria.ItemType;
 import HollowWorld.ECS.Events.DropItemBlock;
 import HollowWorld.ECS.Events.MousePressedEvent;
@@ -69,10 +70,14 @@ public class MainGame extends AbstractBoilerPlateGame {
 //            );
 //        }
         PlayerInput input = findGameObjectByName("Player").getComponent(PlayerInput.class);
+        GameObject player = findGameObjectByName("Player");
         if(input.isMouseLeftJustPressed()){
             System.out.println("Player clicked at: ( " + input.getMouseX() + ", " + input.getMouseY() + ")");
             IVector blockpos = GameData.screenXYtoBlockXY(input.getMouseX(), input.getMouseY());
             System.out.println("Player clicked at: ( " + blockpos.x + ", " + blockpos.y + ")");
+        }
+        if(input.getDropItem()){
+            player.getComponent(InventoryComponent.class).dropItem(GameData.worldXYtoScreenXY(player.getTransform().x, player.getTransform().y).x + 50 , GameData.worldXYtoScreenXY(player.getTransform().x, player.getTransform().y).y , player.getComponent(InventoryComponent.class).getSelectedSlotItem());
         }
         super.update(gc, dt);
 

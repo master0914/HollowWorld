@@ -15,6 +15,8 @@ public class PlayerInput extends Component {
     // also nur einmal pro tasten druck true
     private int mouseX, mouseY;
     private boolean inventory;
+    private boolean[] numberPressed;
+    private boolean dropItem;
 
     @Override
     public void update(GameContainer gc, float dt) {
@@ -30,6 +32,20 @@ public class PlayerInput extends Component {
         //Logger.info("PlayerMouseInputs: x: " + mouseX + ",  y: " + mouseY + ", mouseLeftDown: "
         //+ mouseLeft + ",  mouseLeftJustDown: " + mouseLeftJustPressed);
         inventory = gc.getInput().isKey(KeyEvent.VK_E);
+        dropItem = gc.getInput().isKey(KeyEvent.VK_Q);
+
+        numberPressed = new boolean[10];
+        numberPressed[0] = gc.getInput().isKey(KeyEvent.VK_0);
+        numberPressed[2] = gc.getInput().isKey(KeyEvent.VK_2);
+        numberPressed[3] = gc.getInput().isKey(KeyEvent.VK_3);
+        numberPressed[1] = gc.getInput().isKey(KeyEvent.VK_1);
+        numberPressed[4] = gc.getInput().isKey(KeyEvent.VK_4);
+        numberPressed[5] = gc.getInput().isKey(KeyEvent.VK_5);
+        numberPressed[6] = gc.getInput().isKey(KeyEvent.VK_6);
+        numberPressed[7] = gc.getInput().isKey(KeyEvent.VK_7);
+        numberPressed[8] = gc.getInput().isKey(KeyEvent.VK_8);
+        numberPressed[9] = gc.getInput().isKey(KeyEvent.VK_9);
+
 
     }
 
@@ -50,6 +66,10 @@ public class PlayerInput extends Component {
     public int getMouseY(){return mouseY;}
 
     public boolean isInventory(){return inventory;}
+
+    public boolean[] numberPressed(){return numberPressed;}
+
+    public boolean getDropItem(){return dropItem;}
 }
 
 

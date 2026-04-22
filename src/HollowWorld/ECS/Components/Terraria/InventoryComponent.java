@@ -5,6 +5,8 @@ import HollowWorld.ECS.Components.Component;
 
 
 import HollowWorld.ECS.Components.Terraria.ItemType;
+import HollowWorld.ECS.Events.DropItemBlock;
+import HollowWorld.GameCode.EventManager;
 
 public class InventoryComponent extends Component {
     public Slot[] inventory;
@@ -51,6 +53,22 @@ public class InventoryComponent extends Component {
         }
     }
 
+    public void dropItem(int x, int y, ItemType item){
+        if(item != ItemType.AIR){
+            EventManager.addEvent(new DropItemBlock(item,1,x,y));
+            inventory[getSelectedSlot()].addCount(-1);
+
+            if(inventory[getSelectedSlot()].getCount() <= 0){
+                inventory[getSelectedSlot()].setCount(0);
+                inventory[getSelectedSlot()].setItem(ItemType.AIR);
+                System.out.println(getSelectedSlot());
+
+            }
+        }
+
+
+    }
+
     public int getSlotCount(){
         return inventory.length;
     }
@@ -60,7 +78,7 @@ public class InventoryComponent extends Component {
     }
 
     public void scrollSelected(){
-        inventory[selectedSlot].setSelected(false);
+        resetSelected();
         if(selectedSlot < 8){
             selectedSlot++;
         }
@@ -68,6 +86,33 @@ public class InventoryComponent extends Component {
             selectedSlot = 0;
         }
         inventory[selectedSlot].setSelected(true);
+    }
+
+    public void setSelectedSlot(int slot){
+        resetSelected();
+        inventory[slot].setSelected(true);
+    }
+
+    private void resetSelected(){
+        for(int i = 0; i < inventory.length; i++){
+            inventory[i].setSelected(false);
+        }
+    }
+
+    public int getSelectedSlot(){
+        int selected = 0;
+        for(int i = 0; i < inventory.length; i++){
+            if(inventory[i].getSelected()){
+                selected = i;
+            }
+        }
+        return selected;
+    }
+
+    public ItemType getSelectedSlotItem(){
+        ItemType item;
+        item = inventory[getSelectedSlot()].getItem();
+        return item;
     }
 }
 

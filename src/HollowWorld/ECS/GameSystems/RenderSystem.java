@@ -11,6 +11,7 @@ import HollowWorld.ECS.Components.Terraria.InventoryComponent;
 import HollowWorld.ECS.GameObjects.GameObject;
 import HollowWorld.GameCode.WorldGeneration.WorldMap;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import static HollowWorld.GameCode.GameData.cameraPosition;
@@ -69,19 +70,25 @@ public class RenderSystem extends GameSystem{
 
         } else {
 
-            if(gc.getInput().getScroll() > 0){
-                inv.scrollSelected();
+            for(int i = 1; i <= 9; i++){
+                if(input.numberPressed()[i]){
+                    inv.setSelectedSlot(i - 1);
+                }
             }
 
-            renderer.fillRect(150, 400, 700, 80, 0xffd0d0d0);
-            renderer.drawRect(150, 400, 700, 80, 0xff000000);
 
-            for (int i = 0; i < 8; i++) {
-                renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 416, false, 2);
-                renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 + 170, 466, 0xff000000);
+
+
+
+            renderer.fillRect(200, 400, 650, 84, 0xffd0d0d0);
+            renderer.drawRect(200, 400, 650, 84, 0xff000000);
+
+            for (int i = 0; i < 9; i++) {
+                renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 220, 416, false, 2);
+                renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 + 220, 466, 0xff000000);
 
                 if(inv.getSlot(i).getSelected()){
-                    renderer.drawRect(i * 70 + 161,410, 65,65,0xff000000);
+                    renderer.drawRect(i * 70 + 211,410, 65,65,0xff000000);
                 }
             }
 
