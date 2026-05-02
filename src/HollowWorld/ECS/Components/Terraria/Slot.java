@@ -38,4 +38,5 @@ public class Slot {
     public boolean getSelected(){
         return selected;
     }
+
 }

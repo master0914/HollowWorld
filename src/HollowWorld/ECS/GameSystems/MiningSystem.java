@@ -48,29 +48,29 @@ public class MiningSystem extends GameSystem {
 
         if (input.isMouseLeft()){
             IVector blockpos = GameData.screenXYtoBlockXY(input.getMouseX(), input.getMouseY());
-            BlockType p = worldMap.getBlock(blockpos.x, blockpos.y);
 
-            if(p != BlockType.AIR){
+            if(blockpos.x < worldMap.getWidth() && blockpos.x >= 0.0 && blockpos.y >= 0.0 && blockpos.y < worldMap.getHeight()){
+                BlockType p = worldMap.getBlock(blockpos.x, blockpos.y);
 
+                if(p != BlockType.AIR){
 
-                if(current_block_hp < 0){
-                    current_block_hp = p.hardness;
+                    if(current_block_hp < 0){
+                        current_block_hp = p.hardness;
 
-                }
+                    }
 
+                    Runnable scheduleMineBlock = () -> mineBlock();
 
+                    if(!mining){
+                        if(current_block_hp <= 0){
+                            current_block_hp = -1;
+                            EventManager.addEvent(new DropItemBlock(p.dropItem, 1, input.getMouseX(), input.getMouseY()));
+                            worldMap.removeBlock(blockpos.x, blockpos.y);
 
-                Runnable scheduleMineBlock = () -> mineBlock();
-
-                if(!mining){
-                    if(current_block_hp <= 0){
-                        current_block_hp = -1;
-                        EventManager.addEvent(new DropItemBlock(p.dropItem, 1, input.getMouseX(), input.getMouseY()));
-                        worldMap.removeBlock(blockpos.x, blockpos.y);
-
-                    }else{
-                        mining = true;
-                        ScheduledFuture<?> schedFuture = scheduler.schedule(scheduleMineBlock,1,TimeUnit.SECONDS);
+                        }else{
+                            mining = true;
+                            ScheduledFuture<?> schedFuture = scheduler.schedule(scheduleMineBlock,1,TimeUnit.SECONDS);
+                        }
                     }
                 }
             }
