@@ -37,7 +37,7 @@ public class EntityFactory {
         player.addComponent(new CameraFollow());
         player.addComponent(new HealthComponent(100));//variabel
         player.addComponent(new DamageComponent(1));//variabel
-        player.addComponent(new InventoryComponent(32));
+        player.addComponent(new InventoryComponent(36));
 
         return player;
     }

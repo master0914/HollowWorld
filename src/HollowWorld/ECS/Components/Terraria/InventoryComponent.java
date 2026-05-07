@@ -26,7 +26,7 @@ public class InventoryComponent extends Component {
         boolean gleichesItem = false;
 
         for (int i = 0; ( i < inventory.length) && (!gleichesItem); i++){
-            if(inventory[i].getItem() == item){
+            if(inventory[i].getItem() == item && inventory[i].getCount() < 64){
                 gleichesItem = true;
                 inventory[i].addCount(1);
             }
@@ -44,14 +44,6 @@ public class InventoryComponent extends Component {
         }
     }
 
-
-    public void inventarAusgeben(){
-        System.out.println();
-        for(int i = 0; i < inventory.length; i++){
-            System.out.print(inventory[i].getItem() + " [" + inventory[i].getCount() + "x] | ");
-
-        }
-    }
 
     public void dropItem(int x, int y, ItemType item){
         if(item != ItemType.AIR){

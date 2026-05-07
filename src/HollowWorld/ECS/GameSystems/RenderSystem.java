@@ -3,6 +3,7 @@ package HollowWorld.ECS.GameSystems;
 import Engine.Core.GameContainer;
 import Engine.Core.Renderer;
 import Engine.Logger;
+import Engine.gfx.Image;
 import HollowWorld.ECS.Components.Core.*;
 import HollowWorld.ECS.Components.Player.CameraFollow;
 import HollowWorld.ECS.Components.Player.PlayerInput;
@@ -51,18 +52,22 @@ public class RenderSystem extends GameSystem{
         PlayerInput input = player.getComponent(PlayerInput.class);
 
         if (input.isInventory()) {
-            renderer.fillRect(150, 50, 700, 400, 0xffd0d0d0);
-            renderer.drawRect(150, 50, 700, 400, 0xff000000);
+
+            renderer.drawImage(new Image("/ui/inventory.png"),220, 70,false,2);
+
             for (int i = 0; i < inv.getSlotCount(); i++) {
                 if (i < 9) {
-                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 70, false, 2);
-                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 + 170, 120, 0xff000000);
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 68 + 234, 342, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 68 + 282, 391, 0xff000000);
                 } else if (i < 18) {
-                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 170, false, 2);
-                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 - 460, 190, 0xff000000);
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 68 - 378, 240, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 68 - 329, 289, 0xff000000);
                 }else if (i < 27) {
-                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 170, 170, false, 2);
-                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 - 1090, 260, 0xff000000);
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 68 - 990, 172, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 68 - 941, 221, 0xff000000);
+                }else{
+                    renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 68 - 1602, 104, false, 2);
+                    renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 68 - 1553, 153, 0xff000000);
                 }
 
 
@@ -70,22 +75,20 @@ public class RenderSystem extends GameSystem{
 
         } else {
 
-            for(int i = 1; i <= 9; i++){
+            /*for(int i = 1; i <= 9; i++){
                 if(input.numberPressed()[i]){
                     inv.setSelectedSlot(i - 1);
                 }
             }
+            */
 
 
-
-
-
-            renderer.fillRect(200, 400, 650, 84, 0xffd0d0d0);
-            renderer.drawRect(200, 400, 650, 84, 0xff000000);
+            renderer.drawImage(new Image("/ui/hotbar.png"),220,400,false,2);
 
             for (int i = 0; i < 9; i++) {
-                renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 70 + 220, 416, false, 2);
-                renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 70 + 220, 466, 0xff000000);
+
+                renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 68 + 234, 412, false, 2);
+                renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 68 + 283, 461, 0xff000000);
 
                 if(inv.getSlot(i).getSelected()){
                     renderer.drawRect(i * 70 + 211,410, 65,65,0xff000000);
