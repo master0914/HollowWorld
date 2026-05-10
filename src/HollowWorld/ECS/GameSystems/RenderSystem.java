@@ -75,27 +75,23 @@ public class RenderSystem extends GameSystem{
 
         } else {
 
-            /*for(int i = 1; i <= 9; i++){
+            for(int i = 1; i <= 9; i++){
                 if(input.numberPressed()[i]){
                     inv.setSelectedSlot(i - 1);
                 }
             }
-            */
-
 
             renderer.drawImage(new Image("/ui/hotbar.png"),220,400,false,2);
 
             for (int i = 0; i < 9; i++) {
 
+                if(inv.getSlot(i).getSelected()){
+                    renderer.drawImage(new Image("/ui/invSlotSelected.png"), i * 68 + 224, 402, false, 2);
+                }
+
                 renderer.drawImage(inv.getSlot(i).getItem().sprite, i * 68 + 234, 412, false, 2);
                 renderer.drawText(Integer.toString(inv.getSlot(i).getCount()), i * 68 + 283, 461, 0xff000000);
-
-                if(inv.getSlot(i).getSelected()){
-                    renderer.drawRect(i * 70 + 211,410, 65,65,0xff000000);
-                }
             }
-
-
         }
     }
 
